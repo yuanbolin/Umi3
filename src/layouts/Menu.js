@@ -33,10 +33,12 @@ class BasicMenu extends Component {
   }
 
   onOpenChange = openKeys => {
+    console.log(openKeys)
     sessionStorage.setItem('openKeys', JSON.stringify(openKeys))
   }
 
   onSelect = item => {
+    console.log(item)
     sessionStorage.setItem('menuSelectKeys', JSON.stringify(item.key))
   }
 
@@ -139,13 +141,15 @@ class BasicMenu extends Component {
   }
 
   render() {
+    console.log(sessionStorage.getItem('menuSelectKeys'))
+    console.log(sessionStorage.getItem('openKeys'))
     return (
       <Menu
         theme={defaultSettings.navTheme}
         mode={defaultSettings.menuMode}
         onSelect={this.onSelect}
         defaultSelectedKeys={[sessionStorage.getItem('menuSelectKeys')?JSON.parse(sessionStorage.getItem('menuSelectKeys')):'/main/index']}
-        defaultOpenKeys={sessionStorage.getItem('openKeys')?JSON.parse(sessionStorage.getItem('openKeys')):'/main/index'}
+        defaultOpenKeys={sessionStorage.getItem('openKeys')?JSON.parse(sessionStorage.getItem('openKeys')):['/main/index']}
         onOpenChange={this.onOpenChange}
       >
         {this.getResultArr(this.state.menuArr)}
