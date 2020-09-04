@@ -42,7 +42,6 @@ class Login extends Component {
               {/*</FormItem>*/}
               <Form.Item
                 name="username"
-                noStyle
                 rules={[{ required: true, message: '请输入用户名' }]}
               >
                 <Input
@@ -54,7 +53,6 @@ class Login extends Component {
               </Form.Item>
               <Form.Item
                 name="password"
-                noStyle
                 rules={[{ required: true, message: '请输入密码' }]}
               >
                 <Input

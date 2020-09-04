@@ -141,8 +141,6 @@ class BasicMenu extends Component {
   }
 
   render() {
-    console.log(sessionStorage.getItem('menuSelectKeys'))
-    console.log(sessionStorage.getItem('openKeys'))
     return (
       <Menu
         theme={defaultSettings.navTheme}
