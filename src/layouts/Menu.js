@@ -123,12 +123,13 @@ class BasicMenu extends Component {
 
   getResultArr = theRouters => {
     const menuArr = this.menuMap(theRouters).filter(item => item !== null)
+    console.log(menuArr)
     const resultArr = []
     const foreach = arr => {
       arr.forEach(item => {
         if (item instanceof Array) {
           foreach(item)
-        } else {
+        } else if(item!=null) {
           resultArr.push(item)
         }
       })
@@ -143,8 +144,8 @@ class BasicMenu extends Component {
         theme={defaultSettings.navTheme}
         mode={defaultSettings.menuMode}
         onSelect={this.onSelect}
-        defaultSelectedKeys={[JSON.parse(sessionStorage.getItem('menuSelectKeys'))]}
-        defaultOpenKeys={JSON.parse(sessionStorage.getItem('openKeys'))}
+        defaultSelectedKeys={[sessionStorage.getItem('menuSelectKeys')?JSON.parse(sessionStorage.getItem('menuSelectKeys')):0]}
+        defaultOpenKeys={sessionStorage.getItem('openKeys')?JSON.parse(sessionStorage.getItem('openKeys')):0}
         onOpenChange={this.onOpenChange}
       >
         {this.getResultArr(this.state.menuArr)}
