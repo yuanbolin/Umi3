@@ -144,8 +144,8 @@ class BasicMenu extends Component {
         theme={defaultSettings.navTheme}
         mode={defaultSettings.menuMode}
         onSelect={this.onSelect}
-        defaultSelectedKeys={[sessionStorage.getItem('menuSelectKeys')?JSON.parse(sessionStorage.getItem('menuSelectKeys')):0]}
-        defaultOpenKeys={sessionStorage.getItem('openKeys')?JSON.parse(sessionStorage.getItem('openKeys')):0}
+        defaultSelectedKeys={[sessionStorage.getItem('menuSelectKeys')?JSON.parse(sessionStorage.getItem('menuSelectKeys')):'/main/index']}
+        defaultOpenKeys={sessionStorage.getItem('openKeys')?JSON.parse(sessionStorage.getItem('openKeys')):'/main/index'}
         onOpenChange={this.onOpenChange}
       >
         {this.getResultArr(this.state.menuArr)}
