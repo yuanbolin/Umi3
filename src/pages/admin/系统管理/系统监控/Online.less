@@ -1,0 +1,41 @@
+
+.contentbox {
+  margin: 0 0 4px 5px;
+  background-color: white;
+  .header {
+    height: 50px;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 10px 10px 0 30px;
+    color: #000;
+
+    .tit {
+      font-size: 16px;
+    }
+  }
+
+  .addBtn {
+    font-weight: bold;
+    float: right;
+    margin-right: 5px;
+    margin-top: 1px;
+  }
+  .middle {
+    padding: 15px 15px;
+
+    .addtit {
+      color: #00ccff;
+      font-size: 16px;
+      font-style: italic;
+      margin-top: 5px;
+    }
+  }
+  .rightDiv {
+    padding: 10px 10px 0 30px;
+
+    :global {
+      .ant-form.ant-form-inline .ant-form-item-control-wrapper {
+        width: 174px !important;
+      }
+    }
+  }
+}

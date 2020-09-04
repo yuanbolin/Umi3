@@ -1,0 +1,48 @@
+.header{
+  height: 50px;
+  border-bottom: 1px solid #E8E8E8;
+  line-height: 50px;
+  padding: 0 0 0 40px;
+  .tit{
+    font-size: 16px;
+    padding-right: 30px;
+  }
+  i{
+    cursor: pointer;
+    color: #97a0b3;
+    font-size: 14px;
+    padding: 0 5px 0 5px;
+    &:hover{
+      color: #606c84;
+    }
+  }
+}
+
+.sider{
+  margin: 0 10px 0 5px;
+  border: solid 1px #EEE;
+  border-radius: 3px 3px;
+  .treeDiv{
+    //background-color: #f0f2f5;
+    //height: 90%;
+    //margin: 10px 10px;
+  }
+}
+
+:global{
+  .ant-layout-sider-zero-width-trigger{
+    left: 0;
+    top: 0;
+    height: 48px;
+    vertical-align: center;
+    line-height: 48px;
+    &:hover{
+      background-color: coral;
+    }
+  }
+  .ant-layout-sider-zero-width{
+    .ant-layout-sider-zero-width-trigger{
+      background-color: coral;
+    }
+  }
+}
