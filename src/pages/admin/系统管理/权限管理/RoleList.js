@@ -151,7 +151,6 @@ class RoleList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '角色名称',
@@ -328,37 +327,31 @@ class RoleList extends Component {
           </div>
           <div className={styles.rightDiv}>
             <Form layout="inline" style={{ display: this.state.isShow }}>
-              <Form.Item label="角色名称：">
-                {getFieldDecorator(`roleName`)(<Input allowClear />)}
+              <Form.Item label="角色名称：" name={'roleName'} >
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label="角色编码：">
-                {getFieldDecorator(`roleCode`)(<Input allowClear />)}
+              <Form.Item label="角色编码：" name={'roleCode'}>
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label="用户类型：">
-                {getFieldDecorator(`roleType`)(
-                  <Select allowClear>
-                    <Option value="USER">员工</Option>
-                    <Option value="ORGANIZARION">组织</Option>
-                  </Select>,
-                )}
+              <Form.Item label="用户类型：" name={'roleType'}>
+                <Select allowClear>
+                  <Option value="USER">员工</Option>
+                  <Option value="ORGANIZARION">组织</Option>
+                </Select>
               </Form.Item>
-              <Form.Item label="是否系统：">
-                {getFieldDecorator(`sys`)(
-                  <Select allowClear>
-                    <Option value="true">是</Option>
-                    <Option value="false">否</Option>
-                  </Select>,
-                )}
+              <Form.Item label="是否系统：" name={'sys'}>
+                <Select allowClear>
+                  <Option value="true">是</Option>
+                  <Option value="false">否</Option>
+                </Select>
               </Form.Item>
-              <Form.Item label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态">
-                {getFieldDecorator(`roleStatusType`)(
-                  <Select allowClear>
-                    <Option value="NORMAL">正常</Option>
-                    <Option value="DISABLE" style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                  </Select>,
-                )}
+              <Form.Item label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态"  name={'roleStatusType'}>
+                <Select allowClear>
+                  <Option value="NORMAL">正常</Option>
+                  <Option value="DISABLE" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                </Select>
               </Form.Item>
               <Form.Item>
                 <Button
@@ -396,5 +389,4 @@ class RoleList extends Component {
   }
 }
 
-const wapper = Form.create()(RoleList);
-export default wapper;
+export default RoleList;

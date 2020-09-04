@@ -75,7 +75,6 @@ class RoleAdd extends Component {
 
   render() {
     const { data } = this.state;
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -94,101 +93,77 @@ class RoleAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form onFinish={this.submit} {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="角色名称">
-                  {getFieldDecorator('roleName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.roleName,
-                  })(<Input allowClear />)}
+                <Form.Item label="角色名称" name={'roleName'} rules={[
+                  {
+                    required: true,
+                    message: '必填!',
+                  },
+                ]} initialValue={data.roleName} >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="角色编码">
-                  {getFieldDecorator('roleCode', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.roleCode,
-                  })(<Input allowClear />)}
+                <Form.Item label="角色编码" name={'roleCode'} rules={ [
+                  {
+                    required: true,
+                    message: '必填!',
+                  },
+                ]} initialValue={data.roleCode}>
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="排序号">
-                  {getFieldDecorator('roleSort', {
-                    initialValue: data.roleSort,
-                  })(<Input allowClear />)}
+                <Form.Item label="排序号" name={'roleSort'} initialValue={data.roleSort}>
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="用户类型">
-                  {getFieldDecorator('roleType', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.roleType,
-                  })(
-                    <Select allowClear>
-                      <Option value="USER">员工</Option>
-                      <Option value="ORGANIZARION">组织</Option>
-                    </Select>,
-                  )}
+                <Form.Item label="用户类型" name={'roleType'} rules={[
+                  {
+                    required: true,
+                    message: '必填!',
+                  },
+                ]} initialValue={data.roleType}>
+                  <Select allowClear>
+                    <Option value="USER">员工</Option>
+                    <Option value="ORGANIZARION">组织</Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="系统内置">
-                  {getFieldDecorator('isSys', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.isSys,
-                  })(
-                    <Radio.Group>
-                      <Radio value>是</Radio>
-                      <Radio value={false}>否</Radio>
-                    </Radio.Group>,
-                  )}
+                <Form.Item label="系统内置" name={'isSys'}  rules={[
+                  {
+                    required: true,
+                    message: '必填!',
+                  },
+                ]} initialValue={data.isSys}>
+                  <Radio.Group>
+                    <Radio value>是</Radio>
+                    <Radio value={false}>否</Radio>
+                  </Radio.Group>
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="状态">
-                  {getFieldDecorator('status', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.status,
-                  })(
-                    <Select allowClear>
-                      <Option value="NORMAL">正常</Option>
-                      <Option value="DISABLE" style={{ color: 'red' }}>
-                        停用
-                      </Option>
-                    </Select>,
-                  )}
+                <Form.Item label="状态" name={'status'} rules={[
+                  {
+                    required: true,
+                    message: '必填!',
+                  },
+                ]} initialValue={data.status}>
+                  <Select allowClear>
+                    <Option value="NORMAL">正常</Option>
+                    <Option value="DISABLE" style={{ color: 'red' }}>
+                      停用
+                    </Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>
@@ -198,15 +173,21 @@ class RoleAdd extends Component {
                   label="备注信息"
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
+                  name={'remarks'}
+                  initialValue={data.remarks}
                 >
-                  {getFieldDecorator('remarks', { initialValue: data.remarks })(
-                    <TextArea rows={4} />,
-                  )}
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
+            <Button
+              type="primary"
+              style={{ marginLeft: 190, marginTop: 15 }}
+              htmlType="submit"
+            >
+              保存
+            </Button>
           </Form>
-
           {/* <Button className={styles.addtit} type='link'> */}
           {/*  授权功能菜单 */}
           {/* </Button> */}
@@ -221,14 +202,6 @@ class RoleAdd extends Component {
           {/*  </Button> */}
           {/*  <TreeMenu /> */}
           {/* </div> */}
-
-          <Button
-            type="primary"
-            style={{ marginLeft: 190, marginTop: 15 }}
-            onClick={this.submit}
-          >
-            保存
-          </Button>
           <Button
             type="default"
             style={{ marginLeft: 10, marginTop: 15 }}
@@ -242,4 +215,4 @@ class RoleAdd extends Component {
   }
 }
 
-export default connect()(Form.create()(RoleAdd));
+export default connect()(RoleAdd);

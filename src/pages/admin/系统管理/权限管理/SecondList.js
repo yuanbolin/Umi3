@@ -8,11 +8,24 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, TreeSelect, Select, Table, Tag, Cascader } from 'antd';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  TreeSelect,
+  Select,
+  Table,
+  Tag,
+  Cascader,
+} from 'antd';
 import { history } from 'umi';
 import { get } from '@/utils/http';
-import styles from './Second.less';
 import SecondAdd from '@/pages/admin/系统管理/权限管理/SecondAdd';
+import styles from './Second.less';
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
@@ -33,19 +46,16 @@ class SecondList extends Component {
   componentDidMount() {
     // this.fetch();
   }
+
   handleShow = () => {
     this.state.Show === '隐藏'
       ? this.setState({ isShow: 'none', Show: '查询' })
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
+  fetch = values => {
     let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+    queryConditions = values;
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -74,7 +84,6 @@ class SecondList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '登录账号',
@@ -116,47 +125,54 @@ class SecondList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>二级管理员</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <Icon type="search" />
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
                 history.push('/admin/system/limit/secondadd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <Icon type="plus" />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='账号：'>{getFieldDecorator(`zh`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='昵称：'>{getFieldDecorator(`nc`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='邮箱：'>{getFieldDecorator(`email`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='手机：'>{getFieldDecorator(`mobilephone`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='电话：'>{getFieldDecorator(`call`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='状态'>
-                {getFieldDecorator(`status`)(
-                  <Select allowClear>
-                    <Option value='正常'>正常</Option>
-                    <Option value='停用' style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                    <Option value='冻结' style={{ color: '#FFCC00' }}>
-                      停用
-                    </Option>
-                  </Select>
-                )}
+            <Form
+              onFinish={this.fetch}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
+              <Form.Item label="账号：" name="zh">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="昵称：" name="nc">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="邮箱：" name="email">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="手机：" name="mobilephone">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="电话：" name="call">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="状态" name="status">
+                <Select allowClear>
+                  <Option value="正常">正常</Option>
+                  <Option value="停用" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                  <Option value="冻结" style={{ color: '#FFCC00' }}>
+                    停用
+                  </Option>
+                </Select>
               </Form.Item>
               <Form.Item>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
+                <Button type="primary" htmlType="submit">
                   查询
                 </Button>
                 <Button
@@ -168,7 +184,7 @@ class SecondList extends Component {
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}
@@ -185,5 +201,4 @@ class SecondList extends Component {
   }
 }
 
-const wapper = Form.create()(SecondList);
-export default wapper;
+export default SecondList;

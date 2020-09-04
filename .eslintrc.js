@@ -1,7 +1,7 @@
 module.exports = {
   parser: 'babel-eslint',
   extends: ['airbnb', 'prettier', 'plugin:compat/recommended', 'eslint-config-umi'],
-  plugins: ['prettier','react'],
+  plugins: ['prettier','react',"react-hooks"],
   env: {
     browser: true,
     node: true,
@@ -17,6 +17,7 @@ module.exports = {
   },
   rules: {
     //规定对象属性换行时注意统一代码风格(要么都换行，要么都不换)。第二个参数是一个对象，配置是否允许在一行代码中书写多个属性。
+    "react-hooks/rules-of-hooks": "error",
     "object-property-newline": ["error", { "allowMultiplePropertiesPerLine": true }],
     "no-inline-comments": 0,//禁止行内备注
     "spaced-comment": 0,//注释风格,要不要有空格什么的
