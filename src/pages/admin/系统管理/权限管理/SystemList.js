@@ -8,11 +8,24 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, TreeSelect, Select, Table, Tag, Cascader } from 'antd';
-import {history} from 'umi';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  TreeSelect,
+  Select,
+  Table,
+  Tag,
+  Cascader,
+} from 'antd';
+import { history } from 'umi';
 import { get } from '@/utils/http';
-import styles from './System.less';
 import SecondAdd from '@/pages/admin/系统管理/权限管理/SystemAdd';
+import styles from './System.less';
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
@@ -33,19 +46,15 @@ class SystemList extends Component {
   componentDidMount() {
     // this.fetch();
   }
+
   handleShow = () => {
     this.state.Show === '隐藏'
       ? this.setState({ isShow: 'none', Show: '查询' })
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = values => {
+    let queryConditions = values;
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -74,7 +83,6 @@ class SystemList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '登录账号',
@@ -116,44 +124,45 @@ class SystemList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>系统管理员</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <Icon type="search" />
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
                 history.push('/admin/system/limit/systemadd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <Icon type="plus" />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='登录账号：'>{getFieldDecorator(`zh`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='用户昵称：'>{getFieldDecorator(`nc`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='状态'>
-                {getFieldDecorator(`status`)(
-                  <Select allowClear>
-                    <Option value='正常'>正常</Option>
-                    <Option value='停用' style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                    <Option value='冻结' style={{ color: '#FFCC00' }}>
-                      冻结
-                    </Option>
-                  </Select>
-                )}
+            <Form
+              onFinish={this.fetch}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
+              <Form.Item label="登录账号：" name="zh">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="用户昵称：" name="nc">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="状态" name="nc">
+                <Select allowClear>
+                  <Option value="正常">正常</Option>
+                  <Option value="停用" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                  <Option value="冻结" style={{ color: '#FFCC00' }}>
+                    冻结
+                  </Option>
+                </Select>
               </Form.Item>
               <Form.Item>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
+                <Button type="primary" htmlType="submit">
                   查询
                 </Button>
                 <Button
@@ -165,7 +174,7 @@ class SystemList extends Component {
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}
@@ -182,5 +191,4 @@ class SystemList extends Component {
   }
 }
 
-const wapper = Form.create()(SystemList);
-export default wapper;
+export default SystemList;

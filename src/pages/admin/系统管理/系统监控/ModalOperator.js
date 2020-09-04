@@ -27,10 +27,10 @@ import {
   Modal,
 } from 'antd';
 
-import { connect,history } from 'umi';
+import { connect, history } from 'umi';
 import { get } from '@/utils/http';
-import styles from './Online.less';
 import TreeMenu from '@/components/Tree';
+import styles from './Online.less';
 
 const { TreeNode } = Tree;
 const { TextArea, Search } = Input;
@@ -119,10 +119,17 @@ class OperatorModal extends Component {
 
   fetch = (params = {}) => {
     this.setState({ loading: true });
-    const newParams = { size: this.PageSize, ...params, ...this.queryConditions };
+    const newParams = {
+      size: this.PageSize,
+      ...params,
+      ...this.queryConditions,
+    };
     get('t-customer-nsjls', newParams).then(res => {
       const { pagination } = this.state;
-      if (Object.keys(params).length === 0 && this.state.pagination.current !== 0) {
+      if (
+        Object.keys(params).length === 0 &&
+        this.state.pagination.current !== 0
+      ) {
         pagination.current = 0;
         this.setState(pagination);
       }
@@ -188,7 +195,6 @@ class OperatorModal extends Component {
       },
     ];
     const dateFormat = 'YYYY/MM/DD';
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -201,28 +207,37 @@ class OperatorModal extends Component {
     return (
       <Layout>
         <Modal
-          title='用户选择'
+          title="用户选择"
           visible={this.state.visible}
           onOk={() => this.props.onChange()}
           onCancel={() => this.props.onChange()}
-          width='70%'
+          width="70%"
         >
           <div className={styles.contentbox}>
             <div className={styles.middle}>
               <div className={styles.rightDiv}>
-                <Form layout='inline' style={{ display: this.state.isShow }}>
-                  <Form.Item label='账号：'>{getFieldDecorator(`dlzh`)(<Input allowClear />)}</Form.Item>
-                  <Form.Item label='昵称：'>{getFieldDecorator(`yhnc`)(<Input allowClear />)}</Form.Item>
-                  <Form.Item label='邮箱：'>{getFieldDecorator(`email`)(<Input allowClear />)}</Form.Item>
-                  <Form.Item label='手机：'>{getFieldDecorator(`mobilephone`)(<Input allowClear />)}</Form.Item>
-                  <Form.Item label='电话：'>{getFieldDecorator(`call`)(<Input allowClear />)}</Form.Item>
+                <Form
+                  onFinish={this.fetch}
+                  layout="inline"
+                  style={{ display: this.state.isShow }}
+                >
+                  <Form.Item label="账号：">
+                    <Input allowClear />
+                  </Form.Item>
+                  <Form.Item label="昵称：" name="yhnc">
+                    <Input allowClear />
+                  </Form.Item>
+                  <Form.Item label="邮箱：" name="email">
+                    <Input allowClear />
+                  </Form.Item>
+                  <Form.Item label="手机：" name="mobilephone">
+                    <Input allowClear />
+                  </Form.Item>
+                  <Form.Item label="电话：" name="call">
+                    <Input allowClear />
+                  </Form.Item>
                   <Form.Item>
-                    <Button
-                      type='primary'
-                      onClick={() => {
-                        this.fetch();
-                      }}
-                    >
+                    <Button type="primary" htmlType="submit">
                       查询
                     </Button>
                     <Button
@@ -234,16 +249,20 @@ class OperatorModal extends Component {
                       重置
                     </Button>
                   </Form.Item>
-                  <Divider dashed='true' />
+                  <Divider dashed="true" />
                 </Form>
 
                 <Alert
-                  type='info'
+                  type="info"
                   message={
                     <span>
                       当前已选择：
                       {selectName ? (
-                        <Tag closable style={{ color: 'blue' }} onClose={this.colseTag}>
+                        <Tag
+                          closable
+                          style={{ color: 'blue' }}
+                          onClose={this.colseTag}
+                        >
                           {selectName}
                         </Tag>
                       ) : null}

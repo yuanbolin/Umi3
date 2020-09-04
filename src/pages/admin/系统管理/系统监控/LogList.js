@@ -8,10 +8,21 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, Select, Table, Modal } from 'antd';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  Select,
+  Table,
+  Modal,
+} from 'antd';
 import { get } from '@/utils/http';
-import styles from './Log.less';
 import ModalOperator from '@/pages/admin/系统管理/系统监控/ModalOperator';
+import styles from './Log.less';
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
@@ -43,13 +54,8 @@ class LogList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = values => {
+    let queryConditions = values;
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -91,7 +97,6 @@ class LogList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '日志标题',
@@ -149,48 +154,60 @@ class LogList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>访问日志查询</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <Icon type="search" />
               {this.state.Show}
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='日志标题：'>{getFieldDecorator(`rzbt`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='请求地址：'>{getFieldDecorator(`qqdz`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='日志类型'>
-                {getFieldDecorator(`rzlx`)(
-                  <Select allowClear>
-                    <Option value='00'>接入日志</Option>
-                    <Option value='01'>修改日志</Option>
-                    <Option value='02'>查询日志</Option>
-                    <Option value='03'>登录登出</Option>
-                  </Select>
-                )}
+            <Form
+              onFinish={this.fetch}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
+              <Form.Item label="日志标题：" name="rzbt">
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label='操作用户：'>
-                {getFieldDecorator(`czyh`)(<Search allowClear onSearch={() => this.setState({ handleModal: true })} />)}
+              <Form.Item label="请求地址：" name="qqdz">
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label='是否异常'>
-                {getFieldDecorator(`sfyc`)(
-                  <Select allowClear>
-                    <Option value='00'>是</Option>
-                    <Option value='01' style={{ color: '#C0C0C0' }}>
-                      否
-                    </Option>
-                  </Select>
-                )}
+              <Form.Item label="日志类型">
+                {' '}
+                name=rzlx
+                <Select allowClear>
+                  <Option value="00">接入日志</Option>
+                  <Option value="01">修改日志</Option>
+                  <Option value="02">查询日志</Option>
+                  <Option value="03">登录登出</Option>
+                </Select>
               </Form.Item>
-              <Form.Item label='业务类型：'>{getFieldDecorator(`ywlx`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='业务主键：'>{getFieldDecorator(`ywzj`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='客户端IP：'>{getFieldDecorator(`khdip`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='操作时间：'>{getFieldDecorator(`czsj`)(<RangePicker allowClear />)}</Form.Item>
+              <Form.Item label="操作用户：" name="czyh">
+                <Search
+                  allowClear
+                  onSearch={() => this.setState({ handleModal: true })}
+                />
+              </Form.Item>
+              <Form.Item label="是否异常" name="sfyc">
+                <Select allowClear>
+                  <Option value="00">是</Option>
+                  <Option value="01" style={{ color: '#C0C0C0' }}>
+                    否
+                  </Option>
+                </Select>
+              </Form.Item>
+              <Form.Item label="业务类型：" name="ywlx">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="业务主键：" name="ywzj">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="客户端IP：" name="khdip">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="操作时间：" name="czsj">
+                <RangePicker allowClear />
+              </Form.Item>
               <Form.Item>
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
+                <Button type="primary" htmlType="submit">
                   查询
                 </Button>
                 <Button
@@ -202,7 +219,7 @@ class LogList extends Component {
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}
@@ -226,5 +243,4 @@ class LogList extends Component {
   }
 }
 
-const wapper = Form.create()(LogList);
-export default wapper;
+export default LogList;
