@@ -63,7 +63,6 @@ class SystemAdd extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(
@@ -188,97 +187,97 @@ class SystemAdd extends Component {
             <Form {...formItemLayout}>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="String 1">
-                    {getFieldDecorator('s1', {})(<Input />)}
+                  <Form.Item label="String 1" name="s1">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="String 2">
-                    {getFieldDecorator('s2', {})(<Input />)}
+                  <Form.Item label="String 2" name="s2">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="String 3">
-                    {getFieldDecorator('s3', {})(<Input />)}
+                  <Form.Item label="String 3" name="s3">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="String 4">
-                    {getFieldDecorator('s4', {})(<Input />)}
+                  <Form.Item label="String 4" name="s4">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="Integer 1">
-                    {getFieldDecorator('i1', {})(<Input />)}
+                  <Form.Item label="Integer 1" name="i1">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="Integer 2">
-                    {getFieldDecorator('i2', {})(<Input />)}
+                  <Form.Item label="Integer 2" name="i2">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="Integer 3">
-                    {getFieldDecorator('i3', {})(<Input />)}
+                  <Form.Item label="Integer 3" name="i3">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="Integer 4">
-                    {getFieldDecorator('i4', {})(<Input />)}
+                  <Form.Item label="Integer 4" name="i4">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="Float  1">
-                    {getFieldDecorator('f1', {})(<Input />)}
+                  <Form.Item label="Float  1" name="f1">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="Float  2">
-                    {getFieldDecorator('f2', {})(<Input />)}
+                  <Form.Item label="Float  2" name="f2">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="Float  3">
-                    {getFieldDecorator('f3', {})(<Input />)}
+                  <Form.Item label="Float  3" name="f3">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="Float  4">
-                    {getFieldDecorator('f4', {})(<Input />)}
+                  <Form.Item label="Float  4" name="f4">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="Date 1">
-                    {getFieldDecorator('d1', {})(<DatePicker />)}
+                  <Form.Item label="Date 1" name="d1">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="Date 2">
-                    {getFieldDecorator('d2', {})(<DatePicker />)}
+                  <Form.Item label="Date 2" name="d2">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={10} offset={1}>
-                  <Form.Item label="Date 3">
-                    {getFieldDecorator('d3', {})(<DatePicker />)}
+                  <Form.Item label="Date 3" name="d3">
+                    <Input />
                   </Form.Item>
                 </Col>
                 <Col span={10}>
-                  <Form.Item label="Date 4">
-                    {getFieldDecorator('d4', {})(<DatePicker />)}
+                  <Form.Item label="Date 4" name="d4">
+                    <Input />
                   </Form.Item>
                 </Col>
               </Row>
@@ -323,4 +322,4 @@ class SystemAdd extends Component {
     );
   }
 }
-export default connect()(Form.create()(SystemAdd));
+export default connect()(SystemAdd);
