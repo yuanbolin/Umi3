@@ -11,8 +11,8 @@ import React, { Component } from 'react';
 import { Button, Col, Divider, Input, Row, Select, Form, message } from 'antd';
 import { connect, history } from 'umi';
 import { get, post, put } from '@/utils/http';
-import styles from './Company.less';
 import OrgTreeSelect from '@/components/OrgTreeSelect';
+import styles from './Company.less';
 
 const { Option } = Select;
 const { TextArea, Search } = Input;
@@ -44,28 +44,24 @@ class OrganizeAdd extends Component {
     history.goBack();
   };
 
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
-      if (this.pageType === 'edit') {
-        const id = this.props.match.params.id;
-        const newParams = { id, ...this.state.data, ...values };
-        put('sys-offices', newParams).then(res => {
-          message.success(`编辑成功`);
-        });
-      } else {
-        const newParams = { ...values };
-        post('sys-offices', newParams).then(res => {
-          message.success(`新增成功`);
-        });
-      }
-    });
+  submit = values => {
+    if (this.pageType === 'edit') {
+      const id = this.props.match.params.id;
+      const newParams = { id, ...this.state.data, ...values };
+      put('sys-offices', newParams).then(res => {
+        message.success(`编辑成功`);
+      });
+    } else {
+      const newParams = { ...values };
+      post('sys-offices', newParams).then(res => {
+        message.success(`新增成功`);
+      });
+    }
   };
 
   render() {
     const { data } = this.state;
     const sysOffice = data.sysOffice ? data.sysOffice : {};
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -85,127 +81,148 @@ class OrganizeAdd extends Component {
           <Form {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="上级机构">
-                  {getFieldDecorator(`parentCode`, {
-                    initialValue: data.parentCode,
-                  })(<OrgTreeSelect mode="officeCode" />)}
+                <Form.Item
+                  label="上级机构"
+                  name="parentCode"
+                  initialValue={data.parentCode}
+                >
+                  <OrgTreeSelect mode="officeCode" />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="机构名称">
-                  {getFieldDecorator('officeName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.officeName,
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="机构名称"
+                  name="officeName"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.officeName}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="机构代码">
-                  {getFieldDecorator('officeCode', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.officeCode,
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="机构代码"
+                  name="officeCode"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.officeCode}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="机构全称">
-                  {getFieldDecorator('fullName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.fullName,
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="机构全称"
+                  name="fullName"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.fullName}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="排序号">
-                  {getFieldDecorator('treeSort', {
-                    initialValue: data.treeSort,
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="排序号"
+                  name="treeSort"
+                  initialValue={data.treeSort}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="机构类型">
-                  {getFieldDecorator('officeType', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.officeType,
-                  })(
-                    <Select allowClear>
-                      <Option value="PROVINCIAL">省级公司</Option>
-                      <Option value="CITY">市级公司</Option>
-                      <Option value="NATIONAL">部门</Option>
-                    </Select>,
-                  )}
+                <Form.Item
+                  label="机构类型"
+                  name="officeType"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.officeType}
+                >
+                  <Select allowClear>
+                    <Option value="PROVINCIAL">省级公司</Option>
+                    <Option value="CITY">市级公司</Option>
+                    <Option value="NATIONAL">部门</Option>
+                  </Select>
+                  ,
                 </Form.Item>
               </Col>
             </Row>
           </Form>
 
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} onFinish={this.submit}>
             <p className={styles.addtit}>详细信息</p>
             <Divider />
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="负责人">
-                  {getFieldDecorator('leader', { initialValue: data.leader })(
-                    <Input />,
-                  )}
+                <Form.Item
+                  label="负责人"
+                  name="leader"
+                  initialValue={data.leader}
+                >
+                  <Input />,
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="办公电话">
-                  {getFieldDecorator('phone', { initialValue: data.phone })(
-                    <Input allowClear />,
-                  )}
+                <Form.Item
+                  label="办公电话"
+                  name="phone"
+                  initialValue={data.phone}
+                >
+                  <Input allowClear />,
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="联系地址">
-                  {getFieldDecorator('address', { initialValue: data.address })(
-                    <Input allowClear />,
-                  )}
+                <Form.Item
+                  label="联系地址"
+                  name="address"
+                  initialValue={data.address}
+                >
+                  <Input allowClear />,
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="邮政编码">
-                  {getFieldDecorator('zipCode', { initialValue: data.zipCode })(
-                    <Input />,
-                  )}
+                <Form.Item
+                  label="邮政编码"
+                  name="zipCode"
+                  initialValue={data.zipCode}
+                >
+                  <Input />,
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="电子邮箱">
-                  {getFieldDecorator('email', { initialValue: data.email })(
-                    <Input allowClear />,
-                  )}
+                <Form.Item
+                  label="电子邮箱"
+                  name="email"
+                  initialValue={data.email}
+                >
+                  <Input allowClear />,
                 </Form.Item>
               </Col>
             </Row>
@@ -215,18 +232,18 @@ class OrganizeAdd extends Component {
                   label="备注信息"
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
+                  name="remarks"
+                  initialValue={data.remarks}
                 >
-                  {getFieldDecorator('remarks', { initialValue: data.remarks })(
-                    <TextArea rows={4} />,
-                  )}
+                  <TextArea rows={4} />,
                 </Form.Item>
               </Col>
             </Row>
             <Divider />
             <Button
               type="primary"
+              htmlType="submit"
               style={{ marginLeft: 200 }}
-              onClick={this.submit}
             >
               保存
             </Button>
@@ -243,4 +260,4 @@ class OrganizeAdd extends Component {
     );
   }
 }
-export default connect()(Form.create()(OrganizeAdd));
+export default connect()(OrganizeAdd);

@@ -8,8 +8,22 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Col, Divider, Input, Row, Select, Form, Icon, Table, DatePicker, Modal, message, Tree } from 'antd';
-import {history} from 'umi';
+import {
+  Button,
+  Col,
+  Divider,
+  Input,
+  Row,
+  Select,
+  Form,
+  Icon,
+  Table,
+  DatePicker,
+  Modal,
+  message,
+  Tree,
+} from 'antd';
+import { history } from 'umi';
 import { get, post, put } from '@/utils/http';
 import styles from './User.less';
 
@@ -67,7 +81,6 @@ class UserShuJu extends Component {
 
   render() {
     const { data } = this.state;
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -86,29 +99,33 @@ class UserShuJu extends Component {
           <Form {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='登录账号'>
-                  {getFieldDecorator('sysOfficeId', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.sysOfficeId,
-                  })(<Search allowClear />)}
+                <Form.Item
+                  label="登录账号"
+                  nmae="sysOfficeId"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.sysOfficeId}
+                >
+                  <Search allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label='用户昵称'>
-                  {getFieldDecorator('sysCompanyId', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.sysCompanyId,
-                  })(<Search allowClear />)}
+                <Form.Item
+                  label="用户昵称"
+                  name="sysCompanyId"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.sysCompanyId}
+                >
+                  <Search allowClear />
                 </Form.Item>
               </Col>
             </Row>
@@ -139,10 +156,18 @@ class UserShuJu extends Component {
             treeData={this.state.companyTree}
           />
           <Divider />
-          <Button type='primary' style={{ marginLeft: 160 }} onClick={this.submit}>
+          <Button
+            type="primary"
+            style={{ marginLeft: 160 }}
+            onClick={this.submit}
+          >
             保存
           </Button>
-          <Button type='default' style={{ marginLeft: 15 }} onClick={this.handleClose}>
+          <Button
+            type="default"
+            style={{ marginLeft: 15 }}
+            onClick={this.handleClose}
+          >
             关闭
           </Button>
         </div>
@@ -150,4 +175,4 @@ class UserShuJu extends Component {
     );
   }
 }
-export default Form.create()(UserShuJu);
+export default UserShuJu;

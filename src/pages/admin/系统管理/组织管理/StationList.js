@@ -7,74 +7,99 @@
  * @Description: Description
  */
 
-import React, { Component } from 'react'
-import { Form, Button, Divider, Icon, Input, Layout, Select, Table, Tag, Tooltip, Modal, notification, Row, Col, message } from 'antd'
+import React, { Component } from 'react';
+import {
+  Form,
+  Button,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+  Modal,
+  notification,
+  Row,
+  Col,
+  message,
+} from 'antd';
 
-import {history} from 'umi'
-import { get, del, put } from '@/utils/http'
-import styles from './Station.less'
+import { history } from 'umi';
+import { get, del, put } from '@/utils/http';
+import styles from './Station.less';
 
-const { Option } = Select
-const { Content } = Layout
-const { confirm } = Modal
-const { TextArea } = Input
+const { Option } = Select;
+const { Content } = Layout;
+const { confirm } = Modal;
+const { TextArea } = Input;
 
 class StationList extends Component {
   constructor(props) {
-    super(props)
-    this.PageSize = 10
+    super(props);
+    this.PageSize = 10;
     this.state = {
       dataSource: [],
       loading: false,
       pagination: { current: 0, pageSize: this.PageSize },
       isShow: 'block',
       Show: '隐藏',
-    }
+    };
   }
 
+  formRef = React.createRef();
+
   componentDidMount() {
-    this.fetch()
+    this.fetch();
   }
 
   handleShow = () => {
-    this.state.Show === '隐藏' ? this.setState({ isShow: 'none', Show: '查询' }) : this.setState({ isShow: 'block', Show: '隐藏' })
-  }
+    this.state.Show === '隐藏'
+      ? this.setState({ isShow: 'none', Show: '查询' })
+      : this.setState({ isShow: 'block', Show: '隐藏' });
+  };
 
   fetch = (params = {}) => {
-    let queryConditions = {}
+    let queryConditions = {};
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        queryConditions = values
+        queryConditions = values;
       }
-    })
-    this.setState({ loading: true })
-    const newParams = { page: 0, size: this.PageSize, ...params, ...queryConditions }
+    });
+    this.setState({ loading: true });
+    const newParams = {
+      page: 0,
+      size: this.PageSize,
+      ...params,
+      ...queryConditions,
+    };
     get('sys-posts', newParams).then(res => {
-      const { pagination } = this.state
+      const { pagination } = this.state;
       if (Object.keys(params).length === 0 && pagination.current !== 0) {
-        pagination.current = 0
+        pagination.current = 0;
       }
-      pagination.total = parseInt(res.headers['x-total-count'], 10)
+      pagination.total = parseInt(res.headers['x-total-count'], 10);
       this.setState({
         loading: false,
         dataSource: res.data,
         pagination,
-      })
-    })
-  }
+      });
+    });
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination }
-    pager.current = pagination.current - 1
-    this.setState({ pagination })
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current - 1;
+    this.setState({ pagination });
     this.fetch({
       page: pager.current,
       ...filters,
-    })
-  }
+    });
+  };
 
   showDeleteConfirm = id => {
-    const that = this
+    const that = this;
     confirm({
       title: '信息',
       content: '确认要删除该岗位吗?',
@@ -85,15 +110,15 @@ class StationList extends Component {
         del(`sys-posts/${id}`).then(res => {
           notification.success({
             message: '删除成功',
-          })
-          that.fetch()
-        })
+          });
+          that.fetch();
+        });
       },
-    })
-  }
+    });
+  };
 
   tyConfirm = record => {
-    const that = this
+    const that = this;
     confirm({
       title: '停用',
       content: '确认要停用该岗位吗?',
@@ -101,20 +126,20 @@ class StationList extends Component {
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        const obj = Object.assign({}, record)
-        obj.status = 'DISABLE'
+        const obj = Object.assign({}, record);
+        obj.status = 'DISABLE';
         put('sys-posts', obj).then(res => {
           notification.success({
             message: '停用成功',
-          })
-          that.fetch()
-        })
+          });
+          that.fetch();
+        });
       },
-    })
-  }
+    });
+  };
 
   qyConfirm = record => {
-    const that = this
+    const that = this;
     confirm({
       title: '启用',
       content: '确认要启用该岗位吗?',
@@ -122,21 +147,20 @@ class StationList extends Component {
       okType: 'success',
       cancelText: '取消',
       onOk() {
-        const obj = Object.assign({}, record)
-        obj.status = 'NORMAL'
+        const obj = Object.assign({}, record);
+        obj.status = 'NORMAL';
         put('sys-posts', obj).then(res => {
           notification.success({
             message: '启用成功',
-          })
-          that.fetch()
-        })
+          });
+          that.fetch();
+        });
       },
-    })
-  }
+    });
+  };
 
   render() {
-    const { getFieldDecorator } = this.props.form
-    const defaultVal = JSON.parse(sessionStorage.getItem(this.props.match.url))
+    const defaultVal = JSON.parse(sessionStorage.getItem(this.props.match.url));
     const columns = [
       {
         title: '岗位名称',
@@ -150,9 +174,9 @@ class StationList extends Component {
         title: '岗位分类',
         dataIndex: 'postType',
         render: text => {
-          if (text === 'SENIOR') return '高层'
-          if (text === 'MIDDLE') return '中层'
-          if (text === 'BASIC') return '基层'
+          if (text === 'SENIOR') return '高层';
+          if (text === 'MIDDLE') return '中层';
+          if (text === 'BASIC') return '基层';
         },
       },
       {
@@ -163,8 +187,8 @@ class StationList extends Component {
         title: '状态',
         dataIndex: 'status',
         render: text => {
-          if (text === 'NORMAL') return <Tag color='blue'>正常</Tag>
-          if (text === 'DISABLE') return <Tag color='red'>停用</Tag>
+          if (text === 'NORMAL') return <Tag color="blue">正常</Tag>;
+          if (text === 'DISABLE') return <Tag color="red">停用</Tag>;
         },
       },
       {
@@ -172,55 +196,65 @@ class StationList extends Component {
         dataIndex: 'operator',
         render: (text, record) => {
           const bj_bt = (
-            <Tooltip placement='top' title='编辑岗位'>
+            <Tooltip placement="top" title="编辑岗位">
               <Button
-                type='link'
+                type="link"
                 style={{ paddingLeft: 0 }}
                 onClick={() => {
-                  history.push({ pathname: `/admin/system/organ/stationedit/${record.id}` })
+                  history.push({
+                    pathname: `/admin/system/organ/stationedit/${record.id}`,
+                  });
                 }}
               >
-                <Icon type='edit' style={{ color: 'green' }} />
+                <Icon type="edit" style={{ color: 'green' }} />
               </Button>
             </Tooltip>
-          )
+          );
           const del_bt = (
-            <Tooltip placement='top' title='删除岗位'>
+            <Tooltip placement="top" title="删除岗位">
               <Button
-                type='link'
+                type="link"
                 style={{ paddingLeft: 0 }}
                 onClick={() => {
-                  this.showDeleteConfirm(record.id)
+                  this.showDeleteConfirm(record.id);
                 }}
               >
-                <Icon type='delete' style={{ color: 'red' }} />
+                <Icon type="delete" style={{ color: 'red' }} />
               </Button>
             </Tooltip>
-          )
+          );
           const ty_bt =
             record.status === 'NORMAL' ? (
-              <Tooltip placement='top' title='停用岗位'>
-                <Button type='link' style={{ paddingLeft: 0 }} onClick={() => this.tyConfirm(record)}>
-                  <Icon type='stop' style={{ color: 'red' }} />
+              <Tooltip placement="top" title="停用岗位">
+                <Button
+                  type="link"
+                  style={{ paddingLeft: 0 }}
+                  onClick={() => this.tyConfirm(record)}
+                >
+                  <Icon type="stop" style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
-              <Tooltip placement='top' title='启用岗位'>
-                <Button type='link' style={{ paddingLeft: 0 }} onClick={() => this.qyConfirm(record)}>
-                  <Icon type='check-circle' style={{ color: 'green' }} />
+              <Tooltip placement="top" title="启用岗位">
+                <Button
+                  type="link"
+                  style={{ paddingLeft: 0 }}
+                  onClick={() => this.qyConfirm(record)}
+                >
+                  <Icon type="check-circle" style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
-            )
+            );
           return (
             <span>
               {bj_bt}
               {ty_bt}
               {del_bt}
             </span>
-          )
+          );
         },
       },
-    ]
+    ];
 
     return (
       <Layout>
@@ -231,56 +265,66 @@ class StationList extends Component {
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
-                history.push('/admin/system/organ/stationadd') // 跳转方式 2
+                history.push('/admin/system/organ/stationadd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <Icon type="plus" />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='岗位编码'>
-                {getFieldDecorator(`postCode`, {
-                  initialValue: defaultVal ? defaultVal.postCode : '',
-                })(<Input allowClear />)}
+            <Form
+              layout="inline"
+              style={{ display: this.state.isShow }}
+              ref={this.formRef}
+            >
+              <Form.Item
+                label="岗位编码"
+                name="postCode"
+                initialValue={defaultVal ? defaultVal.postCode : ''}
+              >
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label='岗位名称'>
-                {getFieldDecorator(`postName`, {
-                  initialValue: defaultVal ? defaultVal.postName : '',
-                })(<Input allowClear />)}
+              <Form.Item
+                label="岗位名称"
+                name="postType"
+                initialValue={defaultVal ? defaultVal.postType : ''}
+              >
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label='岗位分类'>
-                {getFieldDecorator(`postType`, {
-                  initialValue: defaultVal ? defaultVal.postType : '',
-                })(
-                  <Select allowClear>
-                    <Option value='SENIOR'>高管</Option>
-                    <Option value='MIDDLE'>中层</Option>
-                    <Option value='BASIC'>基层</Option>
-                  </Select>
-                )}
+              <Form.Item
+                label="岗位分类"
+                name="postType"
+                initialValue={defaultVal ? defaultVal.postType : ''}
+              >
+                <Select allowClear>
+                  <Option value="SENIOR">高管</Option>
+                  <Option value="MIDDLE">中层</Option>
+                  <Option value="BASIC">基层</Option>
+                </Select>
+                ,
               </Form.Item>
-              <Form.Item label='状态'>
-                {getFieldDecorator(`status`, {
-                  initialValue: defaultVal ? defaultVal.status : '',
-                })(
-                  <Select allowClear>
-                    <Option value='NORMAL'>正常</Option>
-                    <Option value='DISABLE' style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                  </Select>
-                )}
+              <Form.Item
+                label="状态"
+                name="status"
+                initialValue={defaultVal ? defaultVal.status : ''}
+              >
+                <Select allowClear>
+                  <Option value="NORMAL">正常</Option>
+                  <Option value="DISABLE" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                </Select>
+                ,
               </Form.Item>
               <Form.Item>
                 <Button
-                  type='primary'
+                  type="primary"
                   onClick={() => {
-                    this.fetch()
+                    this.fetch();
                   }}
                 >
                   查询
@@ -288,13 +332,13 @@ class StationList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields()
+                    this.formRef.current.resetFields();
                   }}
                 >
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
 
             <div>
@@ -311,9 +355,8 @@ class StationList extends Component {
           </div>
         </Content>
       </Layout>
-    )
+    );
   }
 }
 
-const wapper = Form.create()(StationList)
-export default wapper
+export default StationList;

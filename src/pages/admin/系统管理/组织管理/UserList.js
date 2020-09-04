@@ -7,7 +7,7 @@
  * @Description: Description
  */
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
   Form,
   Button,
@@ -25,82 +25,91 @@ import {
   notification,
   Modal,
   message,
-} from 'antd'
-import {history} from 'umi'
-import { del, get, put } from '@/utils/http'
-import TreeSideBar from '../../../../components/TreeSideBar'
-import styles from './User.less'
-import OrgTreeSelect from '@/components/OrgTreeSelect'
-import CompanyTreeSelect from '@/components/CompanyTreeSelect'
-import StationSelect from '@/components/StationSelect'
+} from 'antd';
+import { history } from 'umi';
+import { del, get, put } from '@/utils/http';
+import OrgTreeSelect from '@/components/OrgTreeSelect';
+import CompanyTreeSelect from '@/components/CompanyTreeSelect';
+import StationSelect from '@/components/StationSelect';
+import styles from './User.less';
+import TreeSideBar from '../../../../components/TreeSideBar';
 
-const { confirm } = Modal
-const { Option } = Select
-const { Sider, Content } = Layout
-const { TreeNode } = TreeSelect
+const { confirm } = Modal;
+const { Option } = Select;
+const { Sider, Content } = Layout;
+const { TreeNode } = TreeSelect;
 
 class UserList extends Component {
   constructor(props) {
-    super(props)
-    this.PageSize = 10
+    super(props);
+    this.PageSize = 10;
     this.state = {
       data: [],
       loading: false,
       pagination: { current: 0, pageSize: this.PageSize },
       isShow: 'block',
       Show: '隐藏',
-    }
+    };
   }
 
+  formRef = React.createRef();
+
   componentDidMount() {
-    this.fetch()
+    this.fetch();
   }
 
   handleShow = () => {
-    this.state.Show === '隐藏' ? this.setState({ isShow: 'none', Show: '查询' }) : this.setState({ isShow: 'block', Show: '隐藏' })
-  }
+    this.state.Show === '隐藏'
+      ? this.setState({ isShow: 'none', Show: '查询' })
+      : this.setState({ isShow: 'block', Show: '隐藏' });
+  };
 
   fetch = (params = {}) => {
-    let queryConditions = {}
+    let queryConditions = {};
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        queryConditions = values
+        queryConditions = values;
       }
-    })
-    this.setState({ loading: true })
-    const newParams = { page: 0, size: this.PageSize, ...params, ...queryConditions }
+    });
+    this.setState({ loading: true });
+    const newParams = {
+      page: 0,
+      size: this.PageSize,
+      ...params,
+      ...queryConditions,
+    };
     get('sys/user-employees', newParams).then(res => {
-      const { pagination } = this.state
+      const { pagination } = this.state;
       if (Object.keys(params).length === 0 && pagination.current !== 0) {
-        pagination.current = 0
+        pagination.current = 0;
       }
-      pagination.total = parseInt(res.headers['x-total-count'], 10)
+      pagination.total = parseInt(res.headers['x-total-count'], 10);
       this.setState({
         loading: false,
         data: res.data,
         pagination,
-      })
-    })
-  }
+      });
+    });
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
-    const pager = { ...this.state.pagination }
-    pager.current = pagination.current - 1
-    this.setState({ pagination })
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current - 1;
+    this.setState({ pagination });
     this.fetch({
       page: pager.current,
       ...filters,
-    })
-  }
+    });
+  };
 
   resetPassword = id => {
     put('sys/user-employees/reset-password', id).then(res => {
-      message.success('操作成功')
-    })
-  }
+      message.success('操作成功');
+    });
+  };
 
   showDeleteConfirm = id => {
-    const that = this
+    const that = this;
     confirm({
       title: '信息',
       content: '确认要删除该用户吗?',
@@ -109,17 +118,17 @@ class UserList extends Component {
       cancelText: '取消',
       onOk() {
         del(`sys/user-employees/delete/${id}`).then(res => {
-          that.fetch()
+          that.fetch();
           notification.success({
             message: '删除成功',
-          })
-        })
+          });
+        });
       },
-    })
-  }
+    });
+  };
 
   tyConfirm = userId => {
-    const that = this
+    const that = this;
     confirm({
       title: '停用',
       content: '确认要停用该用户吗?',
@@ -128,17 +137,17 @@ class UserList extends Component {
       cancelText: '取消',
       onOk() {
         put('sys/user-employees/disable', userId).then(res => {
-          that.fetch()
+          that.fetch();
           notification.success({
             message: '停用成功',
-          })
-        })
+          });
+        });
       },
-    })
-  }
+    });
+  };
 
   qyConfirm = userId => {
-    const that = this
+    const that = this;
     confirm({
       title: '启用',
       content: '确认要启用该用户吗?',
@@ -147,22 +156,21 @@ class UserList extends Component {
       cancelText: '取消',
       onOk() {
         put('sys/user-employees/enable', userId).then(res => {
-          that.fetch()
+          that.fetch();
           notification.success({
             message: '启用成功',
-          })
-        })
+          });
+        });
       },
-    })
-  }
+    });
+  };
 
   clickSideBar = val => {
     // sideBar组织机构点击事件
-    this.props.form.setFieldsValue({ sysOfficeId: val }, this.fetch) // callback func
-  }
+    this.formRef.current.setFieldsValue({ sysOfficeId: val }, this.fetch); // callback func
+  };
 
   render() {
-    const { getFieldDecorator } = this.props.form
     const columns = [
       {
         title: '登录账号',
@@ -200,21 +208,21 @@ class UserList extends Component {
         title: '状态',
         dataIndex: 'userInfo.status',
         render: text => {
-          let color = ''
-          let t = ''
+          let color = '';
+          let t = '';
           switch (text) {
             case 'NORMAL':
-              color = 'blue'
-              t = '正常'
-              break
+              color = 'blue';
+              t = '正常';
+              break;
             case 'DISABLE':
-              color = 'red'
-              t = '禁用'
-              break
+              color = 'red';
+              t = '禁用';
+              break;
             default:
-              break
+              break;
           }
-          return <Tag color={color}>{t}</Tag>
+          return <Tag color={color}>{t}</Tag>;
         },
       },
       {
@@ -241,64 +249,74 @@ class UserList extends Component {
               {/*    数据权限*/}
               {/*  </Tag>*/}
               {/*</Tooltip>*/}
-              <Tooltip title='用户密码重置'>
+              <Tooltip title="用户密码重置">
                 <Tag
                   onClick={() => {
-                    this.resetPassword(record.id)
+                    this.resetPassword(record.id);
                   }}
                 >
                   重置密码
                 </Tag>
               </Tooltip>
             </div>
-          )
+          );
           const gd_bt = (
-            <Tooltip placement='top' title={tt}>
-              <Button type='link' style={{ paddingLeft: 0 }}>
-                <Icon type='right-circle' style={{ color: 'blue' }} />
+            <Tooltip placement="top" title={tt}>
+              <Button type="link" style={{ paddingLeft: 0 }}>
+                <Icon type="right-circle" style={{ color: 'blue' }} />
               </Button>
             </Tooltip>
-          )
+          );
           const bj_bt = (
-            <Tooltip placement='top' title='编辑用户'>
+            <Tooltip placement="top" title="编辑用户">
               <Button
-                type='link'
+                type="link"
                 style={{ paddingLeft: 0 }}
                 onClick={() => {
-                  history.push({ pathname: `/admin/system/organ/useredit/${record.id}` })
+                  history.push({
+                    pathname: `/admin/system/organ/useredit/${record.id}`,
+                  });
                 }}
               >
-                <Icon type='edit' style={{ color: 'green' }} />
+                <Icon type="edit" style={{ color: 'green' }} />
               </Button>
             </Tooltip>
-          )
+          );
           const ty_bt =
             record.userInfo.status === 'NORMAL' ? (
-              <Tooltip placement='top' title='停用用户'>
-                <Button type='link' style={{ paddingLeft: 0 }} onClick={() => this.tyConfirm(record.id)}>
-                  <Icon type='stop' style={{ color: 'red' }} />
+              <Tooltip placement="top" title="停用用户">
+                <Button
+                  type="link"
+                  style={{ paddingLeft: 0 }}
+                  onClick={() => this.tyConfirm(record.id)}
+                >
+                  <Icon type="stop" style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
-              <Tooltip placement='top' title='启用用户'>
-                <Button type='link' style={{ paddingLeft: 0 }} onClick={() => this.qyConfirm(record.id)}>
-                  <Icon type='check-circle' style={{ color: 'green' }} />
+              <Tooltip placement="top" title="启用用户">
+                <Button
+                  type="link"
+                  style={{ paddingLeft: 0 }}
+                  onClick={() => this.qyConfirm(record.id)}
+                >
+                  <Icon type="check-circle" style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
-            )
+            );
           const del_bt = (
-            <Tooltip placement='top' title='删除用户'>
+            <Tooltip placement="top" title="删除用户">
               <Button
-                type='link'
+                type="link"
                 style={{ paddingLeft: 0 }}
                 onClick={() => {
-                  this.showDeleteConfirm(record.id)
+                  this.showDeleteConfirm(record.id);
                 }}
               >
-                <Icon type='delete' style={{ color: 'red' }} />
+                <Icon type="delete" style={{ color: 'red' }} />
               </Button>
             </Tooltip>
-          )
+          );
           return (
             <span>
               {bj_bt}
@@ -306,10 +324,10 @@ class UserList extends Component {
               {del_bt}
               {gd_bt}
             </span>
-          )
+          );
         },
       },
-    ]
+    ];
     return (
       <Layout>
         <TreeSideBar onSelect={this.clickSideBar} {...this.props} />
@@ -320,45 +338,65 @@ class UserList extends Component {
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
-                history.push('/admin/system/organ/useradd') // 跳转方式 2
+                history.push('/admin/system/organ/useradd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <Icon type="plus" />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='帐号'>{getFieldDecorator(`user.loginCode`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='昵称'>{getFieldDecorator(`user.userName`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='邮箱'>{getFieldDecorator(`user.email`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='手机'>{getFieldDecorator(`user.mobile`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='电话'>{getFieldDecorator(`user.phone`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='姓名'>{getFieldDecorator(`empName`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='机构'>{getFieldDecorator(`office.id`)(<OrgTreeSelect mode='id' />)}</Form.Item>
-              <Form.Item label='公司'>{getFieldDecorator(`company.id`)(<CompanyTreeSelect mode='id' />)}</Form.Item>
-              <Form.Item label='岗位'>{getFieldDecorator(`postList.id`)(<StationSelect />)}</Form.Item>
-              <Form.Item label='状态'>
-                {getFieldDecorator(`user.status`)(
-                  <Select allowClear>
-                    <Option value='NORMAL'>正常</Option>
-                    <Option value='DISABLE' style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                    {/* <Option value='冻结' style={{ color: '#FFCC00' }}> */}
-                    {/*  冻结 */}
-                    {/* </Option> */}
-                  </Select>
-                )}
+            <Form
+              layout="inline"
+              style={{ display: this.state.isShow }}
+              ref={this.formRef}
+            >
+              <Form.Item label="帐号" name="user.loginCode">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="昵称" name="user.userName">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="邮箱" name="user.email">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="手机" name="user.mobile">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="电话" name="user.phone">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="姓名" name="empName">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="机构" name="office.id">
+                <OrgTreeSelect mode="id" />
+              </Form.Item>
+              <Form.Item label="公司" name="company.id">
+                <CompanyTreeSelect mode="id" />
+              </Form.Item>
+              <Form.Item label="岗位" name="postList.id">
+                <StationSelect />
+              </Form.Item>
+              <Form.Item label="状态" name="user.status">
+                <Select allowClear>
+                  <Option value="NORMAL">正常</Option>
+                  <Option value="DISABLE" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                  {/* <Option value='冻结' style={{ color: '#FFCC00' }}> */}
+                  {/*  冻结 */}
+                  {/* </Option> */}
+                </Select>
               </Form.Item>
               <Form.Item>
                 <Button
-                  type='primary'
+                  type="primary"
                   onClick={() => {
-                    this.fetch()
+                    this.fetch();
                   }}
                 >
                   查询
@@ -366,13 +404,13 @@ class UserList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields()
+                    this.formRef.current.resetFields();
                   }}
                 >
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
 
             <div>
@@ -388,9 +426,8 @@ class UserList extends Component {
           </div>
         </Content>
       </Layout>
-    )
+    );
   }
 }
 
-const wapper = Form.create()(UserList)
-export default wapper
+export default UserList;

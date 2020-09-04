@@ -7,21 +7,34 @@
  * @Description: Description
  */
 
-import React, { Component } from 'react'
-import { Button, Col, Divider, Input, Row, Select, Form, Icon, Table, DatePicker, Modal, message } from 'antd'
-import {history} from 'umi'
-import { get, post, put } from '@/utils/http'
-import styles from './User.less'
+import React, { Component } from 'react';
+import {
+  Button,
+  Col,
+  Divider,
+  Input,
+  Row,
+  Select,
+  Form,
+  Icon,
+  Table,
+  DatePicker,
+  Modal,
+  message,
+} from 'antd';
+import { history } from 'umi';
+import { get, post, put } from '@/utils/http';
+import styles from './User.less';
 
-const { Option } = Select
-const { TextArea, Search } = Input
+const { Option } = Select;
+const { TextArea, Search } = Input;
 
 class UserFenPei extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       data: [],
-    }
+    };
   }
 
   componentDidMount() {
@@ -29,12 +42,12 @@ class UserFenPei extends Component {
   }
 
   handleClose = () => {
-    history.push('/admin/system/organ/userlist')
-  }
+    history.push('/admin/system/organ/userlist');
+  };
 
   submit = () => {
     this.props.form.validateFields((err, values) => {
-      if (err) return false
+      if (err) return false;
       // const id = this.state.title === '编辑' ? this.props.match.params.id : null;
       // const newParams = { ...id, ...values };
       // post('sys-user-employees', newParams).then(res => {
@@ -42,17 +55,20 @@ class UserFenPei extends Component {
       //   history.push('/admin/system/organ/userlist');
       //   // this.props.history.go(-1);
       //   console.log(values);
-    })
-  }
+    });
+  };
 
   render() {
-    const { data } = this.state
-    const { getFieldDecorator } = this.props.form
+    const { data } = this.state;
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
+        console.log(
+          `selectedRowKeys: ${selectedRowKeys}`,
+          'selectedRows: ',
+          selectedRows,
+        );
       },
-    }
+    };
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -60,7 +76,7 @@ class UserFenPei extends Component {
       wrapperCol: {
         span: 14,
       },
-    }
+    };
     const columns = [
       {
         title: '角色名称',
@@ -70,7 +86,7 @@ class UserFenPei extends Component {
         title: '角色编码',
         dataIndex: 'roleCode',
       },
-    ]
+    ];
 
     return (
       <div className={styles.contentbox}>
@@ -81,29 +97,32 @@ class UserFenPei extends Component {
           <Form {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='登录账号'>
-                  {getFieldDecorator('sysOfficeId', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.sysOfficeId,
-                  })(<Search allowClear />)}
+                <Form.Item
+                  label="登录账号"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.sysOfficeId}
+                >
+                  <Search allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label='用户昵称'>
-                  {getFieldDecorator('sysCompanyId', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                    initialValue: data.sysCompanyId,
-                  })(<Search allowClear />)}
+                <Form.Item
+                  label="用户昵称"
+                  name="sysCompanyId"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.sysCompanyId}
+                >
+                  <Search allowClear />
                 </Form.Item>
               </Col>
             </Row>
@@ -119,15 +138,23 @@ class UserFenPei extends Component {
             loading={this.state.loading}
             rowSelection={rowSelection}
           />
-          <Button type='primary' style={{ marginLeft: 160 }} onClick={this.submit}>
+          <Button
+            type="primary"
+            style={{ marginLeft: 160 }}
+            onClick={this.submit}
+          >
             保存
           </Button>
-          <Button type='default' style={{ marginLeft: 15 }} onClick={this.handleClose}>
+          <Button
+            type="default"
+            style={{ marginLeft: 15 }}
+            onClick={this.handleClose}
+          >
             关闭
           </Button>
         </div>
       </div>
-    )
+    );
   }
 }
-export default Form.create()(UserFenPei)
+export default UserFenPei;
