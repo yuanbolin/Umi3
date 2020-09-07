@@ -55,7 +55,12 @@ class RoleList extends Component {
   };
 
   fetch = async (params = {}) => {
-    let queryConditions = await this.formRef.validateFields();
+    let queryConditions = {};
+    try {
+      queryConditions = await this.formRef.validateFields();
+    } catch (error) {
+      return;
+    }
     this.setState({ loading: true });
     const newParams = {
       page: 0,
