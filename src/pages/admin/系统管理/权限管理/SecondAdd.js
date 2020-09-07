@@ -53,7 +53,7 @@ class SecondAdd extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
+    this.formRef.validateFields((err, values) => {
       if (err) return false;
       console.log(values);
     });
@@ -196,7 +196,7 @@ class SecondAdd extends Component {
                     <Button
                       style={{ marginLeft: 8 }}
                       onClick={() => {
-                        this.props.form.resetFields();
+                        this.formRef.resetFields();
                       }}
                     >
                       重置

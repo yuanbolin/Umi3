@@ -376,7 +376,7 @@ class RoleList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields();
+                    this.formRef.resetFields();
                   }}
                 >
                   重置
