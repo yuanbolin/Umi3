@@ -32,6 +32,7 @@ class RoleAdd extends Component {
     this.state = {
       data: {},
     };
+    this.formRef = React.createRef();
     this.pageType = this.props.match.params.id ? 'edit' : 'add'; // 判断页面是编辑还是新增
   }
 
@@ -46,8 +47,7 @@ class RoleAdd extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
+    this.formRef.validateFields().then(values => {
       if (this.pageType === 'edit') {
         const id = this.props.match.params.id;
         const newParams = { id, ...values };
@@ -93,41 +93,59 @@ class RoleAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form onFinish={this.submit} {...formItemLayout}>
+          <Form ref={this.formRef} {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="角色名称" name={'roleName'} rules={[
-                  {
-                    required: true,
-                    message: '必填!',
-                  },
-                ]} initialValue={data.roleName} >
+                <Form.Item
+                  label="角色名称"
+                  name="roleName"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.roleName}
+                >
                   <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="角色编码" name={'roleCode'} rules={ [
-                  {
-                    required: true,
-                    message: '必填!',
-                  },
-                ]} initialValue={data.roleCode}>
+                <Form.Item
+                  label="角色编码"
+                  name="roleCode"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.roleCode}
+                >
                   <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="排序号" name={'roleSort'} initialValue={data.roleSort}>
-                </Form.Item>
+                <Form.Item
+                  label="排序号"
+                  name="roleSort"
+                  initialValue={data.roleSort}
+                />
               </Col>
               <Col span={10}>
-                <Form.Item label="用户类型" name={'roleType'} rules={[
-                  {
-                    required: true,
-                    message: '必填!',
-                  },
-                ]} initialValue={data.roleType}>
+                <Form.Item
+                  label="用户类型"
+                  name="roleType"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.roleType}
+                >
                   <Select allowClear>
                     <Option value="USER">员工</Option>
                     <Option value="ORGANIZARION">组织</Option>
@@ -137,12 +155,17 @@ class RoleAdd extends Component {
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="系统内置" name={'isSys'}  rules={[
-                  {
-                    required: true,
-                    message: '必填!',
-                  },
-                ]} initialValue={data.isSys}>
+                <Form.Item
+                  label="系统内置"
+                  name="isSys"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.isSys}
+                >
                   <Radio.Group>
                     <Radio value>是</Radio>
                     <Radio value={false}>否</Radio>
@@ -152,12 +175,17 @@ class RoleAdd extends Component {
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="状态" name={'status'} rules={[
-                  {
-                    required: true,
-                    message: '必填!',
-                  },
-                ]} initialValue={data.status}>
+                <Form.Item
+                  label="状态"
+                  name="status"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                  initialValue={data.status}
+                >
                   <Select allowClear>
                     <Option value="NORMAL">正常</Option>
                     <Option value="DISABLE" style={{ color: 'red' }}>
@@ -173,20 +201,13 @@ class RoleAdd extends Component {
                   label="备注信息"
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
-                  name={'remarks'}
+                  name="remarks"
                   initialValue={data.remarks}
                 >
                   <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
-            <Button
-              type="primary"
-              style={{ marginLeft: 190, marginTop: 15 }}
-              htmlType="submit"
-            >
-              保存
-            </Button>
           </Form>
           {/* <Button className={styles.addtit} type='link'> */}
           {/*  授权功能菜单 */}
@@ -202,6 +223,13 @@ class RoleAdd extends Component {
           {/*  </Button> */}
           {/*  <TreeMenu /> */}
           {/* </div> */}
+          <Button
+            type="primary"
+            style={{ marginLeft: 190, marginTop: 15 }}
+            onClick={this.submit}
+          >
+            保存
+          </Button>
           <Button
             type="default"
             style={{ marginLeft: 10, marginTop: 15 }}

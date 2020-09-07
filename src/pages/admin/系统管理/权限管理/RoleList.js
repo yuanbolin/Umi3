@@ -12,7 +12,6 @@ import {
   Form,
   Button,
   Divider,
-  Icon,
   Input,
   Layout,
   Select,
@@ -22,6 +21,7 @@ import {
   notification,
   Modal,
 } from 'antd';
+import { UserOutlined, LoadingOutlined, LockOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import { del, get, put } from '@/utils/http';
 import styles from './Role.less';
@@ -41,6 +41,7 @@ class RoleList extends Component {
       isShow: 'block',
       Show: '隐藏',
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -53,13 +54,8 @@ class RoleList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const newParams = {
       page: 0,
@@ -216,7 +212,7 @@ class RoleList extends Component {
                   });
                 }}
               >
-                <Icon type="edit" style={{ color: 'green' }} />
+                <EditOutlined type="edit" style={{ color: 'green' }} />
               </Button>
             </Tooltip>
           );
@@ -229,7 +225,7 @@ class RoleList extends Component {
                   this.showDeleteConfirm(record.id);
                 }}
               >
-                <Icon type="delete" style={{ color: 'red' }} />
+                <DeleteOutlined type="delete" style={{ color: 'red' }} />
               </Button>
             </Tooltip>
           );
@@ -241,7 +237,7 @@ class RoleList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.tyConfirm(record)}
                 >
-                  <Icon type="stop" style={{ color: 'red' }} />
+                  <StopOutlined type="stop" style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
@@ -251,7 +247,7 @@ class RoleList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.qyConfirm(record)}
                 >
-                  <Icon type="check-circle" style={{ color: 'green' }} />
+                  <checkCircleOutlined style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
             );
@@ -289,7 +285,7 @@ class RoleList extends Component {
           const gd_bt = (
             <Tooltip placement="top" title={tt}>
               <Button type="link" style={{ paddingLeft: 0 }}>
-                <Icon type="right-circle" style={{ color: 'blue' }} />
+                <rightCircleOutlined style={{ color: 'blue' }} />
               </Button>
             </Tooltip>
           );
@@ -326,26 +322,33 @@ class RoleList extends Component {
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout="inline" style={{ display: this.state.isShow }}>
-              <Form.Item label="角色名称：" name={'roleName'} >
+            <Form
+              ref={this.formRef}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
+              <Form.Item label="角色名称：" name="roleName">
                 <Input allowClear />
               </Form.Item>
-              <Form.Item label="角色编码：" name={'roleCode'}>
+              <Form.Item label="角色编码：" name="roleCode">
                 <Input allowClear />
               </Form.Item>
-              <Form.Item label="用户类型：" name={'roleType'}>
+              <Form.Item label="用户类型：" name="roleType">
                 <Select allowClear>
                   <Option value="USER">员工</Option>
                   <Option value="ORGANIZARION">组织</Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="是否系统：" name={'sys'}>
+              <Form.Item label="是否系统：" name="sys">
                 <Select allowClear>
                   <Option value="true">是</Option>
                   <Option value="false">否</Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态"  name={'roleStatusType'}>
+              <Form.Item
+                label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态"
+                name="roleStatusType"
+              >
                 <Select allowClear>
                   <Option value="NORMAL">正常</Option>
                   <Option value="DISABLE" style={{ color: 'red' }}>
