@@ -8,19 +8,34 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Col, Divider, Input, Row, Select, Form, Icon, Table, DatePicker, Modal, Radio, Checkbox } from 'antd';
+import {
+  Button,
+  Col,
+  Divider,
+  Input,
+  Row,
+  Select,
+  Form,
+  Icon,
+  Table,
+  DatePicker,
+  Modal,
+  Radio,
+  Checkbox,
+} from 'antd';
 import { get } from '@/utils/http';
+import { connect, history } from 'umi';
 import styles from './Dict.less';
-import { connect,history } from 'umi';
 
 const { Option } = Select;
 const { TextArea, Search } = Input;
 
 class DictAdd extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -36,8 +51,7 @@ class DictAdd extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
+    this.formRef.current.validateFields().then(values => {
       console.log(values);
     });
   };
@@ -49,7 +63,6 @@ class DictAdd extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -67,68 +80,85 @@ class DictAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='字典名称：'>
-                  {getFieldDecorator('zdmc', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="字典名称："
+                  name="zdmc"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='字典类型：'>
-                  {getFieldDecorator('zdlx', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="字典类型："
+                  name="zdlx"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='是否系统：'>
-                  {getFieldDecorator('sfxt', {})(
-                    <Radio.Group onChange={this.onChange} value={this.state.value}>
-                      <Radio value={1}>是</Radio>
-                      <Radio value={2}>否</Radio>
-                    </Radio.Group>
-                  )}
+                <Form.Item label="是否系统：" name="sfxt">
+                  <Radio.Group
+                    onChange={this.onChange}
+                    value={this.state.value}
+                  >
+                    <Radio value={1}>是</Radio>
+                    <Radio value={2}>否</Radio>
+                  </Radio.Group>
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={20} offset={1}>
-                <Form.Item label='备注信息：' wrapperCol={{ span: 19 }} labelCol={{ span: 3 }}>
-                  {getFieldDecorator('bz', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<TextArea rows={4} />)}
+                <Form.Item
+                  label="备注信息："
+                  wrapperCol={{ span: 19 }}
+                  labelCol={{ span: 3 }}
+                  name="bz"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
           </Form>
 
           <Divider />
-          <Button type='primary' style={{ marginLeft: 160 }} onClick={this.submit}>
+          <Button
+            type="primary"
+            style={{ marginLeft: 160 }}
+            onClick={this.submit}
+          >
             保存
           </Button>
-          <Button type='default' style={{ marginLeft: 15 }} onClick={this.handleClose}>
+          <Button
+            type="default"
+            style={{ marginLeft: 15 }}
+            onClick={this.handleClose}
+          >
             关闭
           </Button>
         </div>
@@ -136,4 +166,4 @@ class DictAdd extends Component {
     );
   }
 }
-export default connect() (Form.create()(DictAdd));
+export default connect()(DictAdd);

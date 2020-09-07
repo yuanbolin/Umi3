@@ -26,14 +26,16 @@ import {
 } from 'antd';
 import { connect, history } from 'umi';
 import { get, post, put } from '@/utils/http';
-import styles from './Menu.less';
 import MenuTreeSelect from '@/components/MenuTreeSelect';
+import styles from './Menu.less';
 
 const { TreeNode } = TreeSelect;
 const { Option } = Select;
 const { TextArea, Search } = Input;
 
 class MenuAdd extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -55,8 +57,7 @@ class MenuAdd extends Component {
   }
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
+    this.formRef.current.validateFields().then(values => {
       if (this.pageType === 'edit') {
         const id = this.props.match.params.id;
         const newParams = { id, ...values };
@@ -98,7 +99,7 @@ class MenuAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item
@@ -112,7 +113,7 @@ class MenuAdd extends Component {
               <Col span={10}>
                 <Form.Item
                   label="菜单类型："
-                  name={'menuType'}
+                  name="menuType"
                   initialValue={data.menuType}
                 >
                   <Radio.Group>
@@ -126,7 +127,7 @@ class MenuAdd extends Component {
               <Col span={10} offset={1}>
                 <Form.Item
                   label="菜单名称："
-                  name={'menuName'}
+                  name="menuName"
                   initialValue={data.menuName}
                 >
                   <Input allowClear />
@@ -135,7 +136,7 @@ class MenuAdd extends Component {
               <Col span={10}>
                 <Form.Item
                   label="页签标题："
-                  name={'menuTitle'}
+                  name="menuTitle"
                   initialValue={data.menuTitle}
                 >
                   <Input allowClear />
@@ -146,33 +147,49 @@ class MenuAdd extends Component {
               <Col span={10} offset={1}>
                 <Form.Item
                   label="链接(Href)："
-                  name={'menuHref'}
+                  name="menuHref"
                   initialValue={data.menuHref}
                 >
                   <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="菜单图标：" name={'menuIcon'} initialValue={data.menuIcon}>
+                <Form.Item
+                  label="菜单图标："
+                  name="menuIcon"
+                  initialValue={data.menuIcon}
+                >
                   <Search allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="排序(升序)：" name={'menuSort'} initialValue={data.menuSort}>
+                <Form.Item
+                  label="排序(升序)："
+                  name="menuSort"
+                  initialValue={data.menuSort}
+                >
                   <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="权限标识：" name={'permission'} initialValue={data.permission}>
+                <Form.Item
+                  label="权限标识："
+                  name="permission"
+                  initialValue={data.permission}
+                >
                   <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="可见：" name={'isShow'} initialValue={data.isShow}>
+                <Form.Item
+                  label="可见："
+                  name="isShow"
+                  initialValue={data.isShow}
+                >
                   <Radio.Group>
                     <Radio value>显示</Radio>
                     <Radio value={false}>隐藏</Radio>
@@ -184,14 +201,14 @@ class MenuAdd extends Component {
 
           <p className={styles.addtit}>其它信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={20} offset={1}>
                 <Form.Item
                   label="备注信息"
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
-                  name={'remarks'}
+                  name="remarks"
                   initialValue={data.remarks}
                 >
                   <TextArea rows={4} />

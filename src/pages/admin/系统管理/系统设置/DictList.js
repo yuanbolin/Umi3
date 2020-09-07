@@ -8,18 +8,33 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, TreeSelect, Select, Table, Tag, Cascader } from 'antd';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  TreeSelect,
+  Select,
+  Table,
+  Tag,
+  Cascader,
+} from 'antd';
 import { history } from 'umi';
 import { get } from '@/utils/http';
+import DictAdd from '@/pages/admin/系统管理/系统设置/DictAdd';
 import TreeSideBar from '../../../../components/TreeSideBar';
 import styles from './Dict.less';
-import DictAdd from '@/pages/admin/系统管理/系统设置/DictAdd';
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
 const { TreeNode } = TreeSelect;
 
 class DictList extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -42,13 +57,8 @@ class DictList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.current.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -77,7 +87,6 @@ class DictList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '字典名称',
@@ -115,47 +124,51 @@ class DictList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>字典管理</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <Icon type="search" />
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
                 history.push('/admin/system/setting/dictadd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <Icon type="plus" />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='字典名称：'>{getFieldDecorator(`csmc`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='字典类型：'>{getFieldDecorator(`csjm`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='是否系统：'>
-                {getFieldDecorator(`sfxt`)(
-                  <Select allowClear>
-                    <Option value='00'>是</Option>
-                    <Option value='01' style={{ color: '#C0C0C0' }}>
-                      否
-                    </Option>
-                  </Select>
-                )}
+            <Form
+              layout="inline"
+              style={{ display: this.state.isShow }}
+              ref={this.formRef}
+            >
+              <Form.Item label="字典名称：" name="csmc">
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label='状态：'>
-                {getFieldDecorator(`status`)(
-                  <Select allowClear>
-                    <Option value='00'>正常</Option>
-                    <Option value='01' style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                  </Select>
-                )}
+              <Form.Item label="字典类型：" name="csjm">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="是否系统：" name="sfxt">
+                <Select allowClear>
+                  <Option value="00">是</Option>
+                  <Option value="01" style={{ color: '#C0C0C0' }}>
+                    否
+                  </Option>
+                </Select>
+              </Form.Item>
+              <Form.Item label="状态：" name="status">
+                <Select allowClear>
+                  <Option value="00">正常</Option>
+                  <Option value="01" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                </Select>
               </Form.Item>
               <Form.Item>
                 <Button
-                  type='primary'
+                  type="primary"
                   onClick={() => {
                     this.fetch();
                   }}
@@ -165,13 +178,13 @@ class DictList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields();
+                    this.formRef.current.resetFields();
                   }}
                 >
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}
@@ -188,5 +201,4 @@ class DictList extends Component {
   }
 }
 
-const wapper = Form.create()(DictList);
-export default wapper;
+export default DictList;

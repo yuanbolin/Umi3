@@ -8,15 +8,29 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Col, Divider, Input, Row, Select, Form, Icon, Table, DatePicker, Modal } from 'antd';
+import {
+  Button,
+  Col,
+  Divider,
+  Input,
+  Row,
+  Select,
+  Form,
+  Icon,
+  Table,
+  DatePicker,
+  Modal,
+} from 'antd';
 import { get } from '@/utils/http';
+import { connect, history } from 'umi';
 import styles from './Module.less';
-import { connect ,history} from 'umi';
 
 const { Option } = Select;
 const { TextArea, Search } = Input;
 
 class ModuleAdd extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,17 +58,17 @@ class ModuleAdd extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
-      console.log(values);
-    });
+    this.formRef.current.validateFields().then(value => console.log(value));
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        console.log(
+          `selectedRowKeys: ${selectedRowKeys}`,
+          'selectedRows: ',
+          selectedRows,
+        );
       },
     };
     const formItemLayout = {
@@ -84,58 +98,86 @@ class ModuleAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='模块名称：'>
-                  {getFieldDecorator('mkmc', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Input allowClear />)}
-                </Form.Item>
-              </Col>
-              <Col span={10}>
-                <Form.Item label='模块编码：'>{getFieldDecorator('mkbm', {rules: [
+                <Form.Item
+                  label="模块名称："
+                  name="mkmc"
+                  rules={[
                     {
                       required: true,
                       message: '必填!',
                     },
-                  ],})(<Input allowClear />)}</Form.Item>
+                  ]}
+                >
+                  <Input allowClear />
+                </Form.Item>
               </Col>
-            </Row>
-            <Row>
-              <Col span={20} offset={1}>
-                <Form.Item label='主类全名' wrapperCol={{ span: 19 }} labelCol={{ span: 3 }}>
-                  {getFieldDecorator('zlqm', {})(<Input placeholder='com.jeesite.modules.sys.web.LoginController' allowClear/>)}
+              <Col span={10}>
+                <Form.Item
+                  label="模块编码："
+                  name="mkbm"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={20} offset={1}>
-                <Form.Item label='模块描述' wrapperCol={{ span: 19 }} labelCol={{ span: 3 }}>
-                  {getFieldDecorator('mkms', {})(<TextArea rows={4} />)}
+                <Form.Item
+                  label="主类全名"
+                  wrapperCol={{ span: 19 }}
+                  labelCol={{ span: 3 }}
+                  name="zlqm"
+                >
+                  <Input
+                    placeholder="com.jeesite.modules.sys.web.LoginController"
+                    allowClear
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={20} offset={1}>
+                <Form.Item
+                  label="模块描述"
+                  wrapperCol={{ span: 19 }}
+                  labelCol={{ span: 3 }}
+                  name="mkms"
+                >
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label='当前版本：'>
-                  {getFieldDecorator('bb', {
-                  })(<Input allowClear />)}
+                <Form.Item label="当前版本：" name="bb">
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
           </Form>
-          <Divider/>
+          <Divider />
 
-          <Button type='primary' style={{ marginLeft: 160 }} onClick={this.submit}>
+          <Button
+            type="primary"
+            style={{ marginLeft: 160 }}
+            onClick={this.submit}
+          >
             保存
           </Button>
-          <Button type='default' style={{ marginLeft: 15 }} onClick={this.handleClose}>
+          <Button
+            type="default"
+            style={{ marginLeft: 15 }}
+            onClick={this.handleClose}
+          >
             关闭
           </Button>
         </div>
@@ -143,4 +185,4 @@ class ModuleAdd extends Component {
     );
   }
 }
-export default connect() (Form.create()(ModuleAdd));
+export default connect()(ModuleAdd);

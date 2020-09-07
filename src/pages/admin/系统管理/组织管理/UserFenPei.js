@@ -99,6 +99,7 @@ class UserFenPei extends Component {
               <Col span={10} offset={1}>
                 <Form.Item
                   label="登录账号"
+                  name="sysOfficeId"
                   rules={[
                     {
                       required: true,

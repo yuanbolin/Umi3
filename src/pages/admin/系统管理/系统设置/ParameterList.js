@@ -24,15 +24,17 @@ import {
 } from 'antd';
 import { history } from 'umi';
 import { get } from '@/utils/http';
+import ParameterAdd from '@/pages/admin/系统管理/系统设置/ParameterAdd';
 import TreeSideBar from '../../../../components/TreeSideBar';
 import styles from './Parameter.less';
-import ParameterAdd from '@/pages/admin/系统管理/系统设置/ParameterAdd';
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
 const { TreeNode } = TreeSelect;
 
 class ParameterList extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -48,19 +50,15 @@ class ParameterList extends Component {
   componentDidMount() {
     // this.fetch();
   }
+
   handleShow = () => {
     this.state.Show === '隐藏'
       ? this.setState({ isShow: 'none', Show: '查询' })
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.current.validateFields;
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -89,7 +87,6 @@ class ParameterList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '参数名称',
@@ -126,7 +123,7 @@ class ParameterList extends Component {
               type="default"
               className={styles.addBtn}
               onClick={() => {
-                router.push('/admin/system/setting/parameteradd'); // 跳转方式 2
+                history.push('/admin/system/setting/parameteradd'); // 跳转方式 2
               }}
             >
               <Icon type="plus" />
@@ -138,22 +135,24 @@ class ParameterList extends Component {
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout="inline" style={{ display: this.state.isShow }}>
-              <Form.Item label="参数名称：">
-                {getFieldDecorator(`csmc`)(<Input allowClear />)}
+            <Form
+              layout="inline"
+              style={{ display: this.state.isShow }}
+              ref={this.formRef}
+            >
+              <Form.Item label="参数名称：" name="csmc">
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label="参数键名：">
-                {getFieldDecorator(`csjm`)(<Input allowClear />)}
+              <Form.Item label="参数键名：" name="csjm">
+                <Input allowClear />
               </Form.Item>
-              <Form.Item label="是否系统：">
-                {getFieldDecorator(`sfxt`)(
-                  <Select allowClear>
-                    <Option value="00">是</Option>
-                    <Option value="01" style={{ color: '#C0C0C0' }}>
-                      否
-                    </Option>
-                  </Select>,
-                )}
+              <Form.Item label="是否系统：" name="sfxt">
+                <Select allowClear>
+                  <Option value="00">是</Option>
+                  <Option value="01" style={{ color: '#C0C0C0' }}>
+                    否
+                  </Option>
+                </Select>
               </Form.Item>
 
               <Form.Item>
@@ -168,7 +167,7 @@ class ParameterList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields();
+                    this.formRef.current.resetFields();
                   }}
                 >
                   重置
@@ -191,5 +190,4 @@ class ParameterList extends Component {
   }
 }
 
-const wapper = Form.create()(ParameterList);
-export default wapper;
+export default ParameterList;

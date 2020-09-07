@@ -7,73 +7,91 @@
  * @Description: Description
  */
 
-import React, { Component } from 'react'
-import { Button, Divider, Form, Icon, Input, Table, Tooltip, Modal, Row, Col, Select, message, TreeSelect, Radio, notification } from 'antd'
-import {history} from 'umi'
+import React, { Component } from 'react';
+import {
+  Button,
+  Divider,
+  Form,
+  Icon,
+  Input,
+  Table,
+  Tooltip,
+  Modal,
+  Row,
+  Col,
+  Select,
+  message,
+  TreeSelect,
+  Radio,
+  notification,
+} from 'antd';
+import { history } from 'umi';
 import { del, get, post, put } from '@/utils/http';
-import styles from './Menu.less'
+import styles from './Menu.less';
 
-const { confirm } = Modal
-const { Option } = Select
-const { Search, TextArea } = Input
+const { confirm } = Modal;
+const { Option } = Select;
+const { Search, TextArea } = Input;
 
 class MenuList extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       dataSource: [],
       loading: false,
       tableKey: 0, //用于展开折叠全部行
-    }
-    this.defaultExpandAllRows = false //默认展开全部行 配合tableKey 使用
-    this.sortChangeRecord = [] // 排序修改使用
+    };
+    this.defaultExpandAllRows = false; //默认展开全部行 配合tableKey 使用
+    this.sortChangeRecord = []; // 排序修改使用
   }
 
   componentDidMount() {
-    this.fetch()
+    this.fetch();
   }
 
   fetch = (params = {}) => {
-    let queryConditions = {}
+    let queryConditions = {};
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        queryConditions = values
+        queryConditions = values;
       }
-    })
-    this.setState({ loading: true })
-    const newParams = { ...params, ...queryConditions }
+    });
+    this.setState({ loading: true });
+    const newParams = { ...params, ...queryConditions };
     get('SysMenuResource/findALLMenu', newParams).then(res => {
       this.setState({
         loading: false,
         dataSource: res.data,
-      })
-    })
-  }
+      });
+    });
+  };
 
   expandRows = isExpand => {
     // 折叠
-    this.defaultExpandAllRows = isExpand
-    this.setState(prevState => ({ tableKey: prevState.tableKey + 1 }))
-  }
+    this.defaultExpandAllRows = isExpand;
+    this.setState(prevState => ({ tableKey: prevState.tableKey + 1 }));
+  };
 
   // 排序
   sortChange = (e, record) => {
     // console.log(e.target.value, record);
-    let rec = Object.assign(record)
-    rec.menuSort = e.target.value
-    this.sortChangeRecord = this.sortChangeRecord.filter(item => item.id !== rec.id)
-    this.sortChangeRecord.push(rec)
-  }
+    let rec = Object.assign(record);
+    rec.menuSort = e.target.value;
+    this.sortChangeRecord = this.sortChangeRecord.filter(
+      item => item.id !== rec.id,
+    );
+    this.sortChangeRecord.push(rec);
+  };
 
   saveSort = () => {
     put('SysMenuResource/saveSort', this.sortChangeRecord).then(res => {
-      notification.success({ message: '保存成功' })
-    })
-  }
+      notification.success({ message: '保存成功' });
+    });
+  };
 
   // 删除
   showDeleteConfirm = record => {
-    const that = this
+    const that = this;
     confirm({
       title: '信息',
       content: '确认要删除该菜单及所有子菜单吗?',
@@ -82,12 +100,12 @@ class MenuList extends Component {
       cancelText: '取消',
       onOk() {
         del(`SysMenuResource/deleteMenu?menuId=${record.id}`).then(res => {
-          that.fetch()
-          notification.success({ message: '删除成功' })
-        })
+          that.fetch();
+          notification.success({ message: '删除成功' });
+        });
       },
-    })
-  }
+    });
+  };
 
   render() {
     const columns = [
@@ -103,21 +121,27 @@ class MenuList extends Component {
         title: '排序',
         dataIndex: 'menuSort',
         render: (text, record) => {
-          return <Input defaultValue={text} onChange={e => this.sortChange(e, record)} style={{ width: 100 }} />
+          return (
+            <Input
+              defaultValue={text}
+              onChange={e => this.sortChange(e, record)}
+              style={{ width: 100 }}
+            />
+          );
         },
       },
       {
         title: '类型',
         dataIndex: 'menuType',
         render: (text, record) => {
-          return text === 'MENU' ? '菜单' : '权限'
+          return text === 'MENU' ? '菜单' : '权限';
         },
       },
       {
         title: '可见',
         dataIndex: 'isShow',
         render: (text, record) => {
-          return text ? '显示' : '隐藏'
+          return text ? '显示' : '隐藏';
         },
       },
       {
@@ -129,68 +153,86 @@ class MenuList extends Component {
         dataIndex: 'operator',
         render: (text, record) => {
           const bj_bt = (
-            <Tooltip placement='top' title='编辑菜单'>
+            <Tooltip placement="top" title="编辑菜单">
               <Button
-                type='link'
+                type="link"
                 style={{ paddingLeft: 0 }}
                 onClick={() => {
-                  history.push({ pathname: `/admin/system/setting/menuedit/${record.id}` })
+                  history.push({
+                    pathname: `/admin/system/setting/menuedit/${record.id}`,
+                  });
                 }}
               >
-                <Icon type='edit' style={{ color: 'green' }} />
+                <Icon type="edit" style={{ color: 'green' }} />
               </Button>
             </Tooltip>
-          )
+          );
           const del_bt = (
-            <Tooltip placement='top' title='删除菜单'>
+            <Tooltip placement="top" title="删除菜单">
               <Button
-                type='link'
+                type="link"
                 style={{ paddingLeft: 0 }}
                 onClick={() => {
-                  this.showDeleteConfirm(record)
+                  this.showDeleteConfirm(record);
                 }}
               >
-                <Icon type='delete' style={{ color: 'red' }} />
+                <Icon type="delete" style={{ color: 'red' }} />
               </Button>
             </Tooltip>
-          )
+          );
           return (
             <span>
               {bj_bt}
               {del_bt}
             </span>
-          )
+          );
         },
       },
-    ]
+    ];
     return (
       <div className={styles.contentbox}>
         <div className={styles.header}>
           <span className={styles.tit}>菜单管理（主菜单管理）</span>
           <Button
-            type='default'
+            type="default"
             className={styles.addBtn}
             onClick={() => {
-              router.push('/admin/system/setting/menuadd') // 跳转方式 2
+              history.push('/admin/system/setting/menuadd'); // 跳转方式 2
             }}
           >
-            <Icon type='plus' />
+            <Icon type="plus" />
             新增
           </Button>
-          <Button type='default' className={styles.addBtn} onClick={()=>{this.expandRows(false)}}>
-            <Icon type='up' />
+          <Button
+            type="default"
+            className={styles.addBtn}
+            onClick={() => {
+              this.expandRows(false);
+            }}
+          >
+            <Icon type="up" />
             折叠
           </Button>
-          <Button type='default' className={styles.addBtn} onClick={()=>{this.expandRows(true)}}>
-            <Icon type='down' />
+          <Button
+            type="default"
+            className={styles.addBtn}
+            onClick={() => {
+              this.expandRows(true);
+            }}
+          >
+            <Icon type="down" />
             展开
           </Button>
-          <Button type='default' className={styles.addBtn} onClick={this.fetch}>
-            <Icon type='sync' />
+          <Button type="default" className={styles.addBtn} onClick={this.fetch}>
+            <Icon type="sync" />
             刷新
           </Button>
-          <Button type='default' className={styles.addBtn} onClick={this.saveSort}>
-            <Icon type='sort-ascending' />
+          <Button
+            type="default"
+            className={styles.addBtn}
+            onClick={this.saveSort}
+          >
+            <Icon type="sort-ascending" />
             保存排序
           </Button>
         </div>
@@ -207,9 +249,8 @@ class MenuList extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }
 
-const wapper = Form.create()(MenuList)
-export default wapper
+export default MenuList;

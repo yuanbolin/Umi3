@@ -49,6 +49,8 @@ class UserEdit extends Component {
     this.fushuRandom = 0; // 用于附属机构key
   }
 
+  formRef = React.createRef();
+
   componentDidMount() {
     this.getRoleList();
     this.getDetail();
@@ -68,7 +70,7 @@ class UserEdit extends Component {
         companyInfo: { id: data.companyInfo.id },
         officeInfo: { id: data.officeInfo.id },
       };
-      this.props.form.setFieldsValue(initVal);
+      this.formRef.current.setFieldsValue(initVal);
       let selectedRowKeysRow = data.userInfo.roleList;
       let selectedRowKeys = [];
       selectedRowKeysRow.forEach(item => {
@@ -202,7 +204,7 @@ class UserEdit extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item

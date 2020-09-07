@@ -8,16 +8,31 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, TreeSelect, Select, Table, Tag, Cascader } from 'antd';
-import {history} from 'umi';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  TreeSelect,
+  Select,
+  Table,
+  Tag,
+  Cascader,
+} from 'antd';
+import { history } from 'umi';
 import { get } from '@/utils/http';
-import styles from './Module.less';
 import ModuleAdd from '@/pages/admin/系统管理/系统设置/ModuleAdd';
+import styles from './Module.less';
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
 
 class ModuleList extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -33,19 +48,15 @@ class ModuleList extends Component {
   componentDidMount() {
     // this.fetch();
   }
+
   handleShow = () => {
     this.state.Show === '隐藏'
       ? this.setState({ isShow: 'none', Show: '查询' })
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.current.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -74,7 +85,6 @@ class ModuleList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '模块名称',
@@ -108,37 +118,43 @@ class ModuleList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>模块管理</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <Icon type="search" />
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
                 history.push('/admin/system/setting/moduleadd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <Icon type="plus" />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='模块名称：'>{getFieldDecorator(`mkmc`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='主类全名：'>{getFieldDecorator(`zlqm`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='状态'>
-                {getFieldDecorator(`status`)(
-                  <Select allowClear>
-                    <Option value='正常'>正常</Option>
-                    <Option value='停用' style={{ color: 'red' }}>
-                      停用
-                    </Option>
-                  </Select>
-                )}
+            <Form
+              layout="inline"
+              style={{ display: this.state.isShow }}
+              ref={this.formRef}
+            >
+              <Form.Item label="模块名称：" name="mkmc">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="主类全名：" name="zlqm">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="状态" name="status">
+                <Select allowClear>
+                  <Option value="正常">正常</Option>
+                  <Option value="停用" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                </Select>
               </Form.Item>
               <Form.Item>
                 <Button
-                  type='primary'
+                  type="primary"
                   onClick={() => {
                     this.fetch();
                   }}
@@ -148,13 +164,13 @@ class ModuleList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields();
+                    this.formRef.current.resetFields();
                   }}
                 >
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}
@@ -171,5 +187,4 @@ class ModuleList extends Component {
   }
 }
 
-const wapper = Form.create()(ModuleList);
-export default wapper;
+export default ModuleList;
