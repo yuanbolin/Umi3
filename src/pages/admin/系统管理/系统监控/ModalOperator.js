@@ -17,7 +17,6 @@ import {
   Select,
   DatePicker,
   Table,
-  Icon,
   Layout,
   Radio,
   Tree,
@@ -79,6 +78,7 @@ class OperatorModal extends Component {
       ],
       visible: false,
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -97,11 +97,8 @@ class OperatorModal extends Component {
     history.goBack();
   };
 
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
-      console.log(values);
-    });
+  submit = async () => {
+    let queryConditions = await this.formRef.validateFields();
   };
 
   onChange = e => {
@@ -217,7 +214,7 @@ class OperatorModal extends Component {
             <div className={styles.middle}>
               <div className={styles.rightDiv}>
                 <Form
-                  onFinish={this.fetch}
+                  ref={this.formRef}
                   layout="inline"
                   style={{ display: this.state.isShow }}
                 >
@@ -237,7 +234,12 @@ class OperatorModal extends Component {
                     <Input allowClear />
                   </Form.Item>
                   <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.fetch();
+                      }}
+                    >
                       查询
                     </Button>
                     <Button

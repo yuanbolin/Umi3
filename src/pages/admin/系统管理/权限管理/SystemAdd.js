@@ -16,11 +16,11 @@ import {
   Row,
   Select,
   Form,
-  Icon,
   Table,
   DatePicker,
   Modal,
 } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { get } from '@/utils/http';
 import { connect, history } from 'umi';
 import styles from './System.less';
@@ -35,6 +35,8 @@ class SystemAdd extends Component {
       isShow: 'block',
       Show: '扩展字段 +',
     };
+    this.formRef = React.createRef();
+    this.formRef2 = React.createRef();
   }
 
   componentDidMount() {
@@ -55,11 +57,9 @@ class SystemAdd extends Component {
     history.goBack();
   };
 
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
-      console.log(values);
-    });
+  submit = async () => {
+    let queryConditions = await this.formRef.validateFields();
+    let queryConditions2 = await this.formRef2.validateFields();
   };
 
   render() {
@@ -99,55 +99,52 @@ class SystemAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form ref={this.formRef} {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="登录账号：">
-                  {getFieldDecorator('dlzh', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Search allowClear />)}
+                <Form.Item
+                  label="登录账号："
+                  name="dlzh"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Search allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="用户昵称：">
-                  {getFieldDecorator('yhnc', {})(<Search allowClear />)}
+                <Form.Item label="用户昵称：" name="yhnc">
+                  <Search allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="电子邮箱">
-                  {getFieldDecorator('email', {})(<Search allowClear />)}
+                <Form.Item label="电子邮箱" name="email">
+                  <Search allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="手机号码">
-                  {getFieldDecorator('mobilephone', {})(<Search />)}
+                <Form.Item label="手机号码" name="mobilephone">
+                  <Search />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="办公电话">
-                  {getFieldDecorator('call', {})(<Search allowClear />)}
+                <Form.Item label="办公电话" name="call">
+                  <Search allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item label="权重(排序)：">
-                  {getFieldDecorator(
-                    'px',
-                    {},
-                  )(
-                    <Input
-                      placeholder="权值越大排名越靠前，请填写数字"
-                      allowClear
-                    />,
-                  )}
+                <Form.Item label="权重(排序)：" name="px">
+                  <Input
+                    placeholder="权值越大排名越靠前，请填写数字"
+                    allowClear
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -157,8 +154,9 @@ class SystemAdd extends Component {
                   label="备注信息"
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
+                  name="bz"
                 >
-                  {getFieldDecorator('bz', {})(<TextArea rows={4} />)}
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
@@ -184,7 +182,7 @@ class SystemAdd extends Component {
           </Button>
           <Divider />
           <div style={{ display: this.state.isShow }}>
-            <Form {...formItemLayout}>
+            <Form ref={this.formRef2} {...formItemLayout}>
               <Row>
                 <Col span={10} offset={1}>
                   <Form.Item label="String 1" name="s1">
@@ -307,8 +305,7 @@ class SystemAdd extends Component {
           onCancel={this.handleCancel}
         >
           <p>
-            <Icon
-              type="question-circle"
+            <QuestionCircleOutlined
               style={{
                 color: '#FFCC00',
                 fontSize: '30px',

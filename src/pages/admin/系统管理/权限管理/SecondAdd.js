@@ -17,7 +17,6 @@ import {
   Select,
   DatePicker,
   Table,
-  Icon,
   Layout,
   Radio,
   Tree,
@@ -26,8 +25,8 @@ import {
 import moment from 'moment';
 import { connect, history } from 'umi';
 import { get } from '@/utils/http';
-import styles from './Second.less';
 import TreeMenu from '@/components/Tree';
+import styles from './Second.less';
 
 const { TreeNode } = Tree;
 const { TextArea, Search } = Input;
@@ -38,6 +37,7 @@ class SecondAdd extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -66,13 +66,8 @@ class SecondAdd extends Component {
     });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -153,34 +148,38 @@ class SecondAdd extends Component {
 
         <div className={styles.middle}>
           <div className={styles.rightDiv}>
-            <Form layout="inline" style={{ display: this.state.isShow }}>
+            <Form
+              ref={this.formRef}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
               <Row>
                 <Col span={6}>
-                  <Form.Item label="账号：" name={'zh'}>
+                  <Form.Item label="账号：" name="zh">
                     <Input allowClear />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
-                  <Form.Item label="昵称：" name={'nc'}>
+                  <Form.Item label="昵称：" name="nc">
                     <Input allowClear />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={6}>
-                  <Form.Item label="邮箱：" name={'email'}>
+                  <Form.Item label="邮箱：" name="email">
                     <Input allowClear />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
-                  <Form.Item label="手机：" name={'mobilephone'}>
+                  <Form.Item label="手机：" name="mobilephone">
                     <Input allowClear />
                   </Form.Item>
                 </Col>
               </Row>
               <Row>
                 <Col span={6}>
-                  <Form.Item label="电话：" name={'call'}>
+                  <Form.Item label="电话：" name="call">
                     <Input allowClear />
                   </Form.Item>
                 </Col>

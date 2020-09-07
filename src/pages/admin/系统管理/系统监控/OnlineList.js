@@ -8,16 +8,27 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, Select, Table, Checkbox, Modal } from 'antd';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Input,
+  Layout,
+  Select,
+  Table,
+  Checkbox,
+  Modal,
+} from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { get } from '@/utils/http';
-import styles from './Online.less';
 import ModalOperator from '@/pages/admin/系统管理/系统监控/ModalOperator';
+import styles from './Online.less';
 
 const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
 const { Sider, Content } = Layout;
-
 class OnlineList extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +43,7 @@ class OnlineList extends Component {
       handleModal: false,
       searchValue: '',
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -44,13 +56,8 @@ class OnlineList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -85,7 +92,7 @@ class OnlineList extends Component {
   };
 
   handleValue = n => {
-    this.props.form.setFieldsValue({ czyh: n });
+    this.formRef.setFieldsValue({ czyh: n });
     this.setState({
       searchValue: n,
     });
@@ -136,38 +143,39 @@ class OnlineList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>在线用户</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='操作用户：'>
-                {getFieldDecorator(`czyh`, {})(
-                  <Search allowClear onSearch={() => this.setState({ handleModal: true })} />
-                )}
+            <Form
+              ref={this.formRef}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
+              <Form.Item label="操作用户：" name="czyh">
+                <Search
+                  allowClear
+                  onSearch={() => this.setState({ handleModal: true })}
+                />
               </Form.Item>
-              <Form.Item>
-                {getFieldDecorator(`A`)(
-                  <div>
-                    <Checkbox.Group>
-                      <Checkbox value='A'>查询所有在线</Checkbox>
-                    </Checkbox.Group>
-                  </div>
-                )}
+              <Form.Item name="A">
+                <div>
+                  <Checkbox.Group>
+                    <Checkbox value="A">查询所有在线</Checkbox>
+                  </Checkbox.Group>
+                </div>
               </Form.Item>
-              <Form.Item>
-                {getFieldDecorator(`B`)(
-                  <div>
-                    <Checkbox.Group>
-                      <Checkbox value='B'>包含游客用户</Checkbox>
-                    </Checkbox.Group>
-                  </div>
-                )}
+              <Form.Item name="B">
+                <div>
+                  <Checkbox.Group>
+                    <Checkbox value="B">包含游客用户</Checkbox>
+                  </Checkbox.Group>
+                </div>
               </Form.Item>
               <Form.Item>
                 <Button
-                  type='primary'
+                  type="primary"
                   onClick={() => {
                     this.fetch();
                   }}
@@ -183,7 +191,7 @@ class OnlineList extends Component {
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}

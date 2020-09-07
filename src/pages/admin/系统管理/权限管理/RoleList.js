@@ -21,7 +21,15 @@ import {
   notification,
   Modal,
 } from 'antd';
-import { UserOutlined, LoadingOutlined, LockOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  StopOutlined,
+  CheckCircleOutlined,
+  RightCircleOutlined,
+  SearchOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import { history } from 'umi';
 import { del, get, put } from '@/utils/http';
 import styles from './Role.less';
@@ -55,12 +63,7 @@ class RoleList extends Component {
   };
 
   fetch = async (params = {}) => {
-    let queryConditions = {};
-    try {
-      queryConditions = await this.formRef.validateFields();
-    } catch (error) {
-      return;
-    }
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const newParams = {
       page: 0,
@@ -217,7 +220,7 @@ class RoleList extends Component {
                   });
                 }}
               >
-                <EditOutlined type="edit" style={{ color: 'green' }} />
+                <EditOutlined style={{ color: 'green' }} />
               </Button>
             </Tooltip>
           );
@@ -230,7 +233,7 @@ class RoleList extends Component {
                   this.showDeleteConfirm(record.id);
                 }}
               >
-                <DeleteOutlined type="delete" style={{ color: 'red' }} />
+                <DeleteOutlined style={{ color: 'red' }} />
               </Button>
             </Tooltip>
           );
@@ -242,7 +245,7 @@ class RoleList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.tyConfirm(record)}
                 >
-                  <StopOutlined type="stop" style={{ color: 'red' }} />
+                  <StopOutlined style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
@@ -252,7 +255,7 @@ class RoleList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.qyConfirm(record)}
                 >
-                  <checkCircleOutlined style={{ color: 'green' }} />
+                  <CheckCircleOutlined style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
             );
@@ -290,7 +293,7 @@ class RoleList extends Component {
           const gd_bt = (
             <Tooltip placement="top" title={tt}>
               <Button type="link" style={{ paddingLeft: 0 }}>
-                <rightCircleOutlined style={{ color: 'blue' }} />
+                <RightCircleOutlined style={{ color: 'blue' }} />
               </Button>
             </Tooltip>
           );
@@ -312,7 +315,7 @@ class RoleList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>角色管理</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type="search" />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
             <Button
@@ -322,7 +325,7 @@ class RoleList extends Component {
                 history.push('/admin/system/limit/roleadd'); // 跳转方式 2
               }}
             >
-              <Icon type="plus" />
+              <PlusOutlined />
               新增
             </Button>
           </div>

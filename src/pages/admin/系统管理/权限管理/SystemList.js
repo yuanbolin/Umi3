@@ -11,9 +11,7 @@ import React, { Component } from 'react';
 import {
   Form,
   Button,
-  DatePicker,
   Divider,
-  Icon,
   Input,
   Layout,
   TreeSelect,
@@ -22,6 +20,7 @@ import {
   Tag,
   Cascader,
 } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import { get } from '@/utils/http';
 import SecondAdd from '@/pages/admin/系统管理/权限管理/SystemAdd';
@@ -41,6 +40,7 @@ class SystemList extends Component {
       isShow: 'block',
       Show: '隐藏',
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -53,8 +53,8 @@ class SystemList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = values => {
-    let queryConditions = values;
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -124,7 +124,7 @@ class SystemList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>系统管理员</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type="search" />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
             <Button
@@ -134,13 +134,13 @@ class SystemList extends Component {
                 history.push('/admin/system/limit/systemadd'); // 跳转方式 2
               }}
             >
-              <Icon type="plus" />
+              <PlusOutlined />
               新增
             </Button>
           </div>
           <div className={styles.rightDiv}>
             <Form
-              onFinish={this.fetch}
+              ref={this.formRef}
               layout="inline"
               style={{ display: this.state.isShow }}
             >
@@ -162,7 +162,12 @@ class SystemList extends Component {
                 </Select>
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.fetch();
+                  }}
+                >
                   查询
                 </Button>
                 <Button

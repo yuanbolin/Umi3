@@ -8,12 +8,32 @@
  */
 
 import React, { Component } from 'react';
-import { Form, Button, DatePicker, Divider, Icon, Input, Layout, TreeSelect, Select, Table, Tag, Cascader } from 'antd';
-import {history} from 'umi';
+import {
+  Form,
+  Button,
+  DatePicker,
+  Divider,
+  Input,
+  Layout,
+  TreeSelect,
+  Select,
+  Table,
+  Tag,
+  Cascader,
+} from 'antd';
+import {
+  SearchOutlined,
+  PlusOutlined,
+  UpOutlined,
+  DownOutlined,
+  SortAscendingOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
+import { history } from 'umi';
 import { get } from '@/utils/http';
+import AreaAdd from '@/pages/admin/系统管理/系统设置/AreaAdd';
 import TreeSideBar from '../../../../components/TreeSideBar';
 import styles from './Menu.less';
-import AreaAdd from '@/pages/admin/系统管理/系统设置/AreaAdd';
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
@@ -30,24 +50,21 @@ class AreaList extends Component {
       isShow: 'block',
       Show: '隐藏',
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
     // this.fetch();
   }
+
   handleShow = () => {
     this.state.Show === '隐藏'
       ? this.setState({ isShow: 'none', Show: '查询' })
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -76,7 +93,6 @@ class AreaList extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const columns = [
       {
         title: '区域名称',
@@ -114,49 +130,59 @@ class AreaList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>行政区划</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type='search' />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
             <Button
-              type='default'
+              type="default"
               className={styles.addBtn}
               onClick={() => {
                 history.push('/admin/system/setting/areaadd'); // 跳转方式 2
               }}
             >
-              <Icon type='plus' />
+              <PlusOutlined />
               新增
             </Button>
-            <Button type='default' className={styles.addBtn}>
-              <Icon type='up' />
+            <Button type="default" className={styles.addBtn}>
+              <UpOutlined />
               折叠
             </Button>
-            <Button type='default' className={styles.addBtn}>
-              <Icon type='down' />
+            <Button type="default" className={styles.addBtn}>
+              <DownOutlined />
               展开
             </Button>
-            <Button type='default' className={styles.addBtn}>
-              <Icon type='sync' />
+            <Button type="default" className={styles.addBtn}>
+              <SyncOutlined />
               刷新
             </Button>
-            <Button type='default' className={styles.addBtn}>
-              <Icon type='sort-ascending' />
+            <Button type="default" className={styles.addBtn}>
+              <SortAscendingOutlined />
               保存排序
             </Button>
           </div>
           <div className={styles.rightDiv}>
-            <Form layout='inline' style={{ display: this.state.isShow }}>
-              <Form.Item label='区域代码'>{getFieldDecorator(`qydm`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='区域名称'>{getFieldDecorator(`qymc`)(<Input allowClear />)}</Form.Item>
-              <Form.Item label='状态'>{getFieldDecorator(`status`)(
-                <Select allowClear >
-                <Option value='00'>正常</Option>
-                <Option value='01' style={{color:'red'}}>停用</Option>
-              </Select>
-              )}</Form.Item>
+            <Form
+              ref={this.formRef}
+              layout="inline"
+              style={{ display: this.state.isShow }}
+            >
+              <Form.Item label="区域代码" name="qydm">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="区域名称" name="qymc">
+                <Input allowClear />
+              </Form.Item>
+              <Form.Item label="状态" name="status">
+                <Select allowClear>
+                  <Option value="00">正常</Option>
+                  <Option value="01" style={{ color: 'red' }}>
+                    停用
+                  </Option>
+                </Select>
+              </Form.Item>
               <Form.Item>
                 <Button
-                  type='primary'
+                  type="primary"
                   onClick={() => {
                     this.fetch();
                   }}
@@ -172,7 +198,7 @@ class AreaList extends Component {
                   重置
                 </Button>
               </Form.Item>
-              <Divider dashed='true' />
+              <Divider dashed="true" />
             </Form>
             <Table
               dataSource={this.state.dataSource}

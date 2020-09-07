@@ -13,13 +13,13 @@ import {
   Button,
   DatePicker,
   Divider,
-  Icon,
   Input,
   Layout,
   Select,
   Table,
   Modal,
 } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { get } from '@/utils/http';
 import ModalOperator from '@/pages/admin/系统管理/系统监控/ModalOperator';
 import styles from './Log.less';
@@ -28,7 +28,6 @@ const { RangePicker } = DatePicker;
 const { Search } = Input;
 const { Option } = Select;
 const { Sider, Content } = Layout;
-
 class LogList extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +41,7 @@ class LogList extends Component {
       handleModal: false,
       searchValue: '',
     };
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -54,8 +54,8 @@ class LogList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = values => {
-    let queryConditions = values;
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -90,7 +90,7 @@ class LogList extends Component {
   };
 
   handleValue = n => {
-    this.props.form.setFieldsValue({ czyh: n });
+    this.formRef.setFieldsValue({ czyh: n });
     this.setState({
       searchValue: n,
     });
@@ -154,13 +154,13 @@ class LogList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>访问日志查询</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type="search" />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
           </div>
           <div className={styles.rightDiv}>
             <Form
-              onFinish={this.fetch}
+              ref={this.formRef}
               layout="inline"
               style={{ display: this.state.isShow }}
             >
@@ -207,7 +207,12 @@ class LogList extends Component {
                 <RangePicker allowClear />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.fetch();
+                  }}
+                >
                   查询
                 </Button>
                 <Button

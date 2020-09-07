@@ -16,7 +16,6 @@ import {
   Row,
   Select,
   Form,
-  Icon,
   Table,
   DatePicker,
   Modal,
@@ -24,8 +23,8 @@ import {
   Checkbox,
 } from 'antd';
 import { get } from '@/utils/http';
-import styles from './Area.less';
 import { connect, history } from 'umi';
+import styles from './Area.less';
 
 const { Option } = Select;
 const { TextArea, Search } = Input;
@@ -34,6 +33,7 @@ class AreaAdd extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.formRef = React.createRef();
   }
 
   componentDidMount() {
@@ -48,11 +48,8 @@ class AreaAdd extends Component {
     history.goBack();
   };
 
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
-      console.log(values);
-    });
+  submit = async () => {
+    let queryConditions = await this.formRef.validateFields();
   };
 
   onChange = e => {
@@ -62,7 +59,6 @@ class AreaAdd extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         span: 6,
@@ -80,39 +76,43 @@ class AreaAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form ref={this.formRef} {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="上级区域：">
-                  {getFieldDecorator('sjqy', {})(<Search allowClear />)}
+                <Form.Item label="上级区域：" name="sjqy">
+                  <Search allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="区域代码：">
-                  {getFieldDecorator('qydm', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="区域代码："
+                  name="qydm"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="区域名称：">
-                  {getFieldDecorator('qymc', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="区域名称："
+                  name="qymc"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
@@ -122,35 +122,33 @@ class AreaAdd extends Component {
                   label="区域类型："
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
+                  name="qylx"
                 >
-                  {getFieldDecorator(
-                    'qylx',
-                    {},
-                  )(
-                    <Radio.Group
-                      onChange={this.onChange}
-                      value={this.state.value}
-                    >
-                      <Radio value={1}>国家</Radio>
-                      <Radio value={2}>省份直辖市</Radio>
-                      <Radio value={3}>地市</Radio>
-                      <Radio value={4}>区县</Radio>
-                    </Radio.Group>,
-                  )}
+                  <Radio.Group
+                    onChange={this.onChange}
+                    value={this.state.value}
+                  >
+                    <Radio value={1}>国家</Radio>
+                    <Radio value={2}>省份直辖市</Radio>
+                    <Radio value={3}>地市</Radio>
+                    <Radio value={4}>区县</Radio>
+                  </Radio.Group>
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
-                <Form.Item label="排序号：">
-                  {getFieldDecorator('px', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '必填!',
-                      },
-                    ],
-                  })(<Input allowClear />)}
+                <Form.Item
+                  label="排序号："
+                  name="px"
+                  rules={[
+                    {
+                      required: true,
+                      message: '必填!',
+                    },
+                  ]}
+                >
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
@@ -160,8 +158,9 @@ class AreaAdd extends Component {
                   label="备注信息："
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
+                  name="bz"
                 >
-                  {getFieldDecorator('bz', {})(<TextArea rows={4} />)}
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
