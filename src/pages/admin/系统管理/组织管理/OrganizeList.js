@@ -365,7 +365,6 @@ class OrganizeList extends Component {
                   <Option value="CITY">市级公司</Option>
                   <Option value="NATIONAL">部门</Option>
                 </Select>
-                ,
               </Form.Item>
               <Form.Item label="状态" name="status">
                 <Select allowClear>
@@ -375,24 +374,22 @@ class OrganizeList extends Component {
                   </Option>
                 </Select>
               </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
-                  查询
-                </Button>
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={() => {
-                    this.formRef.current.resetFields();
-                  }}
-                >
-                  重置
-                </Button>
-              </Form.Item>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.fetch();
+                }}
+              >
+                查询
+              </Button>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  this.formRef.current.resetFields();
+                }}
+              >
+                重置
+              </Button>
               <Divider dashed="true" />
             </Form>
             <Table

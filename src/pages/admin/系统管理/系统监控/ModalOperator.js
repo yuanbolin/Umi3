@@ -98,7 +98,7 @@ class OperatorModal extends Component {
   };
 
   submit = async () => {
-    let queryConditions = await this.formRef.validateFields();
+    let queryConditions = await this.formRef.current.validateFields();
   };
 
   onChange = e => {
@@ -233,24 +233,22 @@ class OperatorModal extends Component {
                   <Form.Item label="电话：" name="call">
                     <Input allowClear />
                   </Form.Item>
-                  <Form.Item>
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        this.fetch();
-                      }}
-                    >
-                      查询
-                    </Button>
-                    <Button
-                      style={{ marginLeft: 8 }}
-                      onClick={() => {
-                        this.formRef.resetFields();
-                      }}
-                    >
-                      重置
-                    </Button>
-                  </Form.Item>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      this.fetch();
+                    }}
+                  >
+                    查询
+                  </Button>
+                  <Button
+                    style={{ marginLeft: 8 }}
+                    onClick={() => {
+                      this.formRef.current.resetFields();
+                    }}
+                  >
+                    重置
+                  </Button>
                   <Divider dashed="true" />
                 </Form>
 
@@ -300,4 +298,4 @@ class OperatorModal extends Component {
   }
 }
 
-export default connect()(Form.create()(OperatorModal));
+export default connect()(OperatorModal);

@@ -15,8 +15,8 @@ import {
   UpOutlined,
 } from '@ant-design/icons';
 import { Link } from 'umi';
-import styles from './index.less';
 import { get } from '@/utils/http';
+import styles from './index.less';
 
 const { Sider } = Layout;
 const { TreeNode } = Tree;
@@ -102,6 +102,7 @@ class TreeSideBar extends Component {
   };
 
   renderTree = data => {
+    console.log('tree', data);
     return data.map(item => {
       return (
         <TreeNode key={item.sysOffice.id} title={item.sysOffice.officeName}>
@@ -135,20 +136,16 @@ class TreeSideBar extends Component {
         <div className={styles.header}>
           <span className={styles.tit}>组织机构</span>
           <Link to="/admin/system/organ/organizelist" title="编辑">
-            <EditOutlined  />
+            <EditOutlined />
           </Link>
           <span
             onClick={this.toggleExpand}
             title={isExpanded ? '折叠' : '展开'}
           >
-            {isExpanded ? (
-              <UpOutlined />
-            ) : (
-              <DownOutlined />
-            )}
+            {isExpanded ? <UpOutlined /> : <DownOutlined />}
           </span>
           <span onClick={this.refresh} title="刷新">
-            <RedoOutlined  />
+            <RedoOutlined />
           </span>
         </div>
         <div className={styles.treeDiv}>
@@ -159,9 +156,8 @@ class TreeSideBar extends Component {
             style={{ fontSize: 12 }}
             onSelect={this.onSelect}
             selectedKeys={selectedKeys}
-          >
-            {treeOpt}
-          </Tree>
+            treeData={treeOpt}
+          />
         </div>
       </Sider>
     );

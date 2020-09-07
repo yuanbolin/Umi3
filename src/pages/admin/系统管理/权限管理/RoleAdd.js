@@ -47,7 +47,7 @@ class RoleAdd extends Component {
   };
 
   submit = () => {
-    this.formRef.validateFields().then(values => {
+    this.formRef.current.validateFields().then(values => {
       if (this.pageType === 'edit') {
         const id = this.props.match.params.id;
         const newParams = { id, ...values };
@@ -132,7 +132,9 @@ class RoleAdd extends Component {
                   label="排序号"
                   name="roleSort"
                   initialValue={data.roleSort}
-                />
+                >
+                  <Input allowClear />
+                </Form.Item>
               </Col>
               <Col span={10}>
                 <Form.Item

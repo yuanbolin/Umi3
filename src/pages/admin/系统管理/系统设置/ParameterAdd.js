@@ -142,7 +142,6 @@ class ParameterAdd extends Component {
                     <Radio value={1}>是</Radio>
                     <Radio value={2}>否</Radio>
                   </Radio.Group>
-                  ,
                 </Form.Item>
               </Col>
             </Row>

@@ -6,92 +6,102 @@
  * @Last Modified time: 2019-08-28 15:54:09
  * @Description: Description
  */
-import React, { Component } from 'react'
-import { Menu } from 'antd'
-import { HomeOutlined,SettingOutlined,ReadOutlined,ToolOutlined,DropboxOutlined,BankOutlined,AlertOutlined,BugOutlined,
-  TwitterOutlined,AppstoreOutlined,UserOutlined,TeamOutlined} from '@ant-design/icons';
-import { Link,withRouter } from 'umi'
-import defaultSettings from '@/../config/defaultSettings'
-import routers from '@/../config/router.config'
+import React, { Component } from 'react';
+import { Menu } from 'antd';
+import {
+  HomeOutlined,
+  SettingOutlined,
+  ReadOutlined,
+  ToolOutlined,
+  DropboxOutlined,
+  BankOutlined,
+  AlertOutlined,
+  BugOutlined,
+  TwitterOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+  TeamOutlined,
+} from '@ant-design/icons';
+import { Link, withRouter } from 'umi';
+import defaultSettings from '@/../config/defaultSettings';
+import routers from '@/../config/router.config';
 
-const { SubMenu } = Menu
+const { SubMenu } = Menu;
 class BasicMenu extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       menuArr: [],
-    }
+    };
   }
 
   componentDidMount() {
-    this.getMenu()
+    this.getMenu();
   }
 
   getMenu = () => {
     // 请求routers
-    this.setState({ menuArr: routers })
-  }
+    this.setState({ menuArr: routers });
+  };
 
   onOpenChange = openKeys => {
-    console.log(openKeys)
-    sessionStorage.setItem('openKeys', JSON.stringify(openKeys))
-  }
+    sessionStorage.setItem('openKeys', JSON.stringify(openKeys));
+  };
 
   onSelect = item => {
-    console.log(item)
-    sessionStorage.setItem('menuSelectKeys', JSON.stringify(item.key))
-  }
+    sessionStorage.setItem('menuSelectKeys', JSON.stringify(item.key));
+  };
 
-  renderIcon=icon=>{
+  renderIcon = icon => {
     switch (icon) {
       case 'HomeOutlined':
-        return <HomeOutlined/>
+        return <HomeOutlined />;
         break;
       case 'SettingOutlined':
-        return <SettingOutlined/>
+        return <SettingOutlined />;
         break;
       case 'ReadOutlined':
-        return <ReadOutlined/>
+        return <ReadOutlined />;
         break;
       case 'ToolOutlined':
-        return <ToolOutlined/>
+        return <ToolOutlined />;
         break;
       case 'DropboxOutlined':
-        return <DropboxOutlined/>
+        return <DropboxOutlined />;
         break;
       case 'BankOutlined':
-        return <BankOutlined/>
+        return <BankOutlined />;
         break;
       case 'AlertOutlined':
-        return <AlertOutlined/>
+        return <AlertOutlined />;
         break;
       case 'TwitterOutlined':
-        return <TwitterOutlined/>
+        return <TwitterOutlined />;
         break;
       case 'AppstoreOutlined':
-        return <AppstoreOutlined/>
+        return <AppstoreOutlined />;
         break;
-        case 'UserOutlined':
-        return <UserOutlined/>
+      case 'UserOutlined':
+        return <UserOutlined />;
         break;
-        case 'BugOutlined':
-        return <BugOutlined/>
+      case 'BugOutlined':
+        return <BugOutlined />;
         break;
-        case 'TeamOutlined':
-        return <TeamOutlined/>
+      case 'TeamOutlined':
+        return <TeamOutlined />;
         break;
       default:
-        return <AppstoreOutlined/>
+        return <AppstoreOutlined />;
         break;
     }
-  }
+  };
 
   menuMap = menu => {
     return menu.map(item => {
-      if (item.hideMenu) return null
-      if (!item.name && !item.routes) return null
+      if (item.hideMenu) return null;
+      if (!item.name && !item.routes) return null;
       if (item.name && !item.routes) {
-        const icon = item.icon ? this.renderIcon(item.icon) : null
+        const icon = item.icon ? this.renderIcon(item.icon) : null;
         return (
           <Menu.Item key={item.path}>
             <Link to={item.path}>
@@ -99,10 +109,10 @@ class BasicMenu extends Component {
               {item.name}
             </Link>
           </Menu.Item>
-        )
+        );
       }
       if (item.name && item.routes) {
-        const icon = item.icon ? this.renderIcon(item.icon) : null
+        const icon = item.icon ? this.renderIcon(item.icon) : null;
         return (
           <SubMenu
             key={item.name}
@@ -115,30 +125,29 @@ class BasicMenu extends Component {
           >
             {this.menuMap(item.routes)}
           </SubMenu>
-        )
+        );
       }
       if (!item.name && item.routes) {
-        return this.menuMap(item.routes)
+        return this.menuMap(item.routes);
       }
-    })
-  }
+    });
+  };
 
   getResultArr = theRouters => {
-    const menuArr = this.menuMap(theRouters).filter(item => item !== null)
-    console.log(menuArr)
-    const resultArr = []
+    const menuArr = this.menuMap(theRouters).filter(item => item !== null);
+    const resultArr = [];
     const foreach = arr => {
       arr.forEach(item => {
         if (item instanceof Array) {
-          foreach(item)
-        } else if(item!=null) {
-          resultArr.push(item)
+          foreach(item);
+        } else if (item != null) {
+          resultArr.push(item);
         }
-      })
-    }
-    foreach(menuArr)
-    return resultArr
-  }
+      });
+    };
+    foreach(menuArr);
+    return resultArr;
+  };
 
   render() {
     return (
@@ -146,14 +155,22 @@ class BasicMenu extends Component {
         theme={defaultSettings.navTheme}
         mode={defaultSettings.menuMode}
         onSelect={this.onSelect}
-        defaultSelectedKeys={[sessionStorage.getItem('menuSelectKeys')?JSON.parse(sessionStorage.getItem('menuSelectKeys')):'/main/index']}
-        defaultOpenKeys={sessionStorage.getItem('openKeys')?JSON.parse(sessionStorage.getItem('openKeys')):['/main/index']}
+        defaultSelectedKeys={[
+          sessionStorage.getItem('menuSelectKeys')
+            ? JSON.parse(sessionStorage.getItem('menuSelectKeys'))
+            : '/main/index',
+        ]}
+        defaultOpenKeys={
+          sessionStorage.getItem('openKeys')
+            ? JSON.parse(sessionStorage.getItem('openKeys'))
+            : ['/main/index']
+        }
         onOpenChange={this.onOpenChange}
       >
         {this.getResultArr(this.state.menuArr)}
       </Menu>
-    )
+    );
   }
 }
 
-export default withRouter(BasicMenu)
+export default withRouter(BasicMenu);

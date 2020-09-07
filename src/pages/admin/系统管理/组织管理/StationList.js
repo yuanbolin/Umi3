@@ -291,7 +291,7 @@ class StationList extends Component {
               </Form.Item>
               <Form.Item
                 label="岗位名称"
-                name="postType"
+                name="postName"
                 initialValue={defaultVal ? defaultVal.postType : ''}
               >
                 <Input allowClear />
@@ -306,7 +306,6 @@ class StationList extends Component {
                   <Option value="MIDDLE">中层</Option>
                   <Option value="BASIC">基层</Option>
                 </Select>
-                ,
               </Form.Item>
               <Form.Item
                 label="状态"
@@ -319,26 +318,23 @@ class StationList extends Component {
                     停用
                   </Option>
                 </Select>
-                ,
               </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
-                  查询
-                </Button>
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={() => {
-                    this.formRef.current.resetFields();
-                  }}
-                >
-                  重置
-                </Button>
-              </Form.Item>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.fetch();
+                }}
+              >
+                查询
+              </Button>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  this.formRef.current.resetFields();
+                }}
+              >
+                重置
+              </Button>
               <Divider dashed="true" />
             </Form>
 

@@ -58,8 +58,8 @@ class SystemAdd extends Component {
   };
 
   submit = async () => {
-    let queryConditions = await this.formRef.validateFields();
-    let queryConditions2 = await this.formRef2.validateFields();
+    let queryConditions = await this.formRef.current.validateFields();
+    let queryConditions2 = await this.formRef2.current.validateFields();
   };
 
   render() {

@@ -34,6 +34,7 @@ import {
   SearchOutlined,
   UpOutlined,
   DownOutlined,
+  SyncOutlined,
 } from '@ant-design/icons';
 import styles from './Company.less';
 
@@ -312,7 +313,7 @@ class CompanyList extends Component {
             ref={this.formRef}
           >
             <Form.Item label="公司名称" name="companyName">
-              <CompanyTreeSelect mode="companyName" />,
+              <CompanyTreeSelect mode="companyName" />
             </Form.Item>
             <Form.Item label="公司代码" name="companyCode">
               <Input allowClear />
@@ -328,24 +329,22 @@ class CompanyList extends Component {
                 </Option>
               </Select>
             </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.fetch();
-                }}
-              >
-                查询
-              </Button>
-              <Button
-                style={{ marginLeft: 8 }}
-                onClick={() => {
-                  this.formRef.current.resetFields();
-                }}
-              >
-                重置
-              </Button>
-            </Form.Item>
+            <Button
+              type="primary"
+              onClick={() => {
+                this.fetch();
+              }}
+            >
+              查询
+            </Button>
+            <Button
+              style={{ marginLeft: 8 }}
+              onClick={() => {
+                this.formRef.current.resetFields();
+              }}
+            >
+              重置
+            </Button>
             <Divider dashed="true" />
           </Form>
           <Table

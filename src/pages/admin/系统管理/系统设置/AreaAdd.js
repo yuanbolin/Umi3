@@ -49,7 +49,7 @@ class AreaAdd extends Component {
   };
 
   submit = async () => {
-    let queryConditions = await this.formRef.validateFields();
+    let queryConditions = await this.formRef.current.validateFields();
   };
 
   onChange = e => {
@@ -185,4 +185,4 @@ class AreaAdd extends Component {
     );
   }
 }
-export default connect()(Form.create()(AreaAdd));
+export default connect()(AreaAdd);

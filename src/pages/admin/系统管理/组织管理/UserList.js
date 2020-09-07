@@ -25,12 +25,19 @@ import {
   Modal,
   message,
 } from 'antd';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  StopOutlined,
+  CheckCircleOutlined,
+  PlusOutlined,
+  RightCircleOutlined,
+} from '@ant-design/icons';
 import { history } from 'umi';
 import { del, get, put } from '@/utils/http';
 import OrgTreeSelect from '@/components/OrgTreeSelect';
 import CompanyTreeSelect from '@/components/CompanyTreeSelect';
 import StationSelect from '@/components/StationSelect';
-import { RightCircleOutlined } from '@ant-design/icons';
 import styles from './User.less';
 import TreeSideBar from '../../../../components/TreeSideBar';
 
@@ -273,7 +280,7 @@ class UserList extends Component {
                   });
                 }}
               >
-                <Icon type="edit" style={{ color: 'green' }} />
+                <EditOutlined style={{ color: 'green' }} />
               </Button>
             </Tooltip>
           );
@@ -285,7 +292,7 @@ class UserList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.tyConfirm(record.id)}
                 >
-                  <Icon type="stop" style={{ color: 'red' }} />
+                  <StopOutlined style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
@@ -295,7 +302,7 @@ class UserList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.qyConfirm(record.id)}
                 >
-                  <Icon type="check-circle" style={{ color: 'green' }} />
+                  <CheckCircleOutlined style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
             );
@@ -308,7 +315,7 @@ class UserList extends Component {
                   this.showDeleteConfirm(record.id);
                 }}
               >
-                <Icon type="delete" style={{ color: 'red' }} />
+                <DeleteOutlined style={{ color: 'red' }} />
               </Button>
             </Tooltip>
           );
@@ -339,7 +346,7 @@ class UserList extends Component {
                 history.push('/admin/system/organ/useradd'); // 跳转方式 2
               }}
             >
-              <Icon type="plus" />
+              <PlusOutlined />
               新增
             </Button>
           </div>
@@ -387,24 +394,22 @@ class UserList extends Component {
                   {/* </Option> */}
                 </Select>
               </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
-                  查询
-                </Button>
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={() => {
-                    this.formRef.current.resetFields();
-                  }}
-                >
-                  重置
-                </Button>
-              </Form.Item>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.fetch();
+                }}
+              >
+                查询
+              </Button>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  this.formRef.current.resetFields();
+                }}
+              >
+                重置
+              </Button>
               <Divider dashed="true" />
             </Form>
 

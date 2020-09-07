@@ -1,15 +1,15 @@
-import axios from 'axios'
-import { Promise } from 'es6-promise'
+import axios from 'axios';
+import { Promise } from 'es6-promise';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import qs from 'qs'
-import { Error_modal } from './Modal'
+import qs from 'qs';
+import { Error_modal } from './Modal';
 
-const CancelToken = axios.CancelToken
+const CancelToken = axios.CancelToken;
 // eslint-disable-next-line import/no-mutable-exports
-let CancelAxiosRequest
+let CancelAxiosRequest;
 // axios 配置
-axios.defaults.timeout = 30000 // 设置超时时间
-axios.defaults.baseURL = `${window.server}/api/` // 这是调用数据接口
+axios.defaults.timeout = 30000; // 设置超时时间
+axios.defaults.baseURL = `${window.server}/api/`; // 这是调用数据接口
 // axios.defaults.baseURL = 'http://localhost:3000/api/'
 axios.interceptors.request.use(
   config => {
@@ -22,45 +22,53 @@ axios.interceptors.request.use(
     // eslint-disable-next-line no-param-reassign
     config.cancelToken = new CancelToken(function executor(c) {
       // An executor function receives a cancel function as a parameter
-      CancelAxiosRequest = c
-    })
-    const token = sessionStorage.getItem('token') // 获取存储在本地的token
+      CancelAxiosRequest = c;
+    });
+    const token = sessionStorage.getItem('token'); // 获取存储在本地的token
     if (token) {
       // 如果有token 认为是 admin 用户 ，如果没有 那是 前台用户
       // eslint-disable-next-line no-param-reassign
-      config.headers.Authorization = `Bearer ${token}` // 携带权限参数
+      config.headers.Authorization = `Bearer ${token}`; // 携带权限参数
     }
-    return config
+    return config;
   },
   err => {
     // eslint-disable-next-line compat/compat
-    return Promise.reject(err)
-  }
-)
+    return Promise.reject(err);
+  },
+);
 // http response 拦截器（所有接收到的请求都要从这儿过一次）
 axios.interceptors.response.use(
   response => {
-    return response
+    return response;
   },
   error => {
-    if (error.response.data.status && error.response.data.status.toString().startsWith('4')) {
-      if (error.response.data.title) Error_modal(error.response.data.title)
+    if (
+      error.response.data.status &&
+      error.response.data.status.toString().startsWith('4')
+    ) {
+      if (error.response.data.title) Error_modal(error.response.data.title);
       // message.error(error.response.data.detail);
       // eslint-disable-next-line compat/compat
-      return Promise.reject(error.response.data)
+      return Promise.reject(error.response.data);
     }
-    if (error.response.data.status && error.response.data.status.toString().startsWith('5')) {
-      Error_modal(`服务器错误，${error.response.data.detail || '请联系开发人员'}`)
+    if (
+      error.response.data.status &&
+      error.response.data.status.toString().startsWith('5')
+    ) {
+      Error_modal(
+        `服务器错误，${error.response.data.detail || '请联系开发人员'}`,
+      );
       // message.error("服务器错误，"+(error.response.data.detail||"请联系开发人员"));
       // eslint-disable-next-line compat/compat
-      return Promise.reject(error.response.data)
+      return Promise.reject(error.response.data);
     }
-  }
-)
+  },
+);
 
-export { CancelAxiosRequest }
+export { CancelAxiosRequest };
 
-export default axios
+export default axios;
 /**
  * get 请求方法
  * @param url
@@ -75,16 +83,21 @@ export function get(url, params = {}) {
         params,
         // eslint-disable-next-line no-shadow
         paramsSerializer(params) {
-          return qs.stringify(params, { arrayFormat: 'repeat', allowDots: true })
-        }
+          return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            allowDots: true,
+          });
+        },
       })
       .then(response => {
-        resolve(response)
+        // resolve(response)
+        resolve(null);
       })
       .catch(err => {
-        reject(err)
-      })
-  })
+        // reject(err)
+        reject(null);
+      });
+  });
 }
 
 /**
@@ -99,12 +112,12 @@ export function post(url, data = {}, params = {}) {
     axios
       .post(url, data, params)
       .then(response => {
-        resolve(response)
+        resolve(response);
       })
       .catch(err => {
-        reject(err)
-      })
-  })
+        reject(err);
+      });
+  });
 }
 
 /**
@@ -118,13 +131,13 @@ export function patch(url, data = {}) {
   return new Promise((resolve, reject) => {
     axios.patch(url, data).then(
       response => {
-        resolve(response)
+        resolve(response);
       },
       err => {
-        reject(err)
-      }
-    )
-  })
+        reject(err);
+      },
+    );
+  });
 }
 
 /**
@@ -138,13 +151,13 @@ export function put(url, data = {}, params = {}) {
   return new Promise((resolve, reject) => {
     axios.put(url, data, params).then(
       response => {
-        resolve(response)
+        resolve(response);
       },
       err => {
-        reject(err)
-      }
-    )
-  })
+        reject(err);
+      },
+    );
+  });
 }
 /**
  * delete 方法封装
@@ -157,11 +170,11 @@ export function del(url, data = {}) {
   return new Promise((resolve, reject) => {
     axios.delete(url, data).then(
       response => {
-        resolve(response)
+        resolve(response);
       },
       err => {
-        reject(err)
-      }
-    )
-  })
+        reject(err);
+      },
+    );
+  });
 }

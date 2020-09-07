@@ -134,7 +134,6 @@ class StationAdd extends Component {
                       停用
                     </Option>
                   </Select>
-                  ,
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -143,13 +142,11 @@ class StationAdd extends Component {
                   name="postType"
                   initialValue={data.postType}
                 >
-                  >
                   <Select allowClear>
                     <Option value="SENIOR">高管</Option>
                     <Option value="MIDDLE">中层</Option>
                     <Option value="BASIC">基层</Option>
                   </Select>
-                  ,
                 </Form.Item>
               </Col>
             </Row>
@@ -162,7 +159,7 @@ class StationAdd extends Component {
                   name="remarks"
                   initialValue={data.remarks}
                 >
-                  <TextArea rows={4} />,
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>

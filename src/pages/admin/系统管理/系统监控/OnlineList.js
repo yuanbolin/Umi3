@@ -57,7 +57,7 @@ class OnlineList extends Component {
   };
 
   fetch = async (params = {}) => {
-    let queryConditions = await this.formRef.validateFields();
+    let queryConditions = await this.formRef.current.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -172,24 +172,22 @@ class OnlineList extends Component {
                   </Checkbox.Group>
                 </div>
               </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
-                  查询
-                </Button>
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={() => {
-                    this.formRef.resetFields();
-                  }}
-                >
-                  重置
-                </Button>
-              </Form.Item>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.fetch();
+                }}
+              >
+                查询
+              </Button>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  this.formRef.current.resetFields();
+                }}
+              >
+                重置
+              </Button>
               <Divider dashed="true" />
             </Form>
             <Table
@@ -214,5 +212,4 @@ class OnlineList extends Component {
   }
 }
 
-const wapper = Form.create()(OnlineList);
-export default wapper;
+export default OnlineList;

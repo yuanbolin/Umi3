@@ -55,7 +55,7 @@ class LogList extends Component {
   };
 
   fetch = async (params = {}) => {
-    let queryConditions = await this.formRef.validateFields();
+    let queryConditions = await this.formRef.current.validateFields();
     this.setState({ loading: true });
     const { pagination } = this.state;
     if (Object.keys(params).length === 0 && pagination.current !== 0) {
@@ -90,7 +90,7 @@ class LogList extends Component {
   };
 
   handleValue = n => {
-    this.formRef.setFieldsValue({ czyh: n });
+    this.formRef.current.setFieldsValue({ czyh: n });
     this.setState({
       searchValue: n,
     });
@@ -170,9 +170,7 @@ class LogList extends Component {
               <Form.Item label="请求地址：" name="qqdz">
                 <Input allowClear />
               </Form.Item>
-              <Form.Item label="日志类型">
-                {' '}
-                name=rzlx
+              <Form.Item label="日志类型" name="rzlx">
                 <Select allowClear>
                   <Option value="00">接入日志</Option>
                   <Option value="01">修改日志</Option>
@@ -206,24 +204,22 @@ class LogList extends Component {
               <Form.Item label="操作时间：" name="czsj">
                 <RangePicker allowClear />
               </Form.Item>
-              <Form.Item>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    this.fetch();
-                  }}
-                >
-                  查询
-                </Button>
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={() => {
-                    this.formRef.resetFields();
-                  }}
-                >
-                  重置
-                </Button>
-              </Form.Item>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.fetch();
+                }}
+              >
+                查询
+              </Button>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  this.formRef.current.resetFields();
+                }}
+              >
+                重置
+              </Button>
               <Divider dashed="true" />
             </Form>
             <Table

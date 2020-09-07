@@ -228,7 +228,7 @@ class UserEdit extends Component {
               </Col>
               <Col span={10}>
                 <Form.Item label="归属公司" name="companyInfo.id">
-                  <CompanyTreeSelect mode="id" />,
+                  <CompanyTreeSelect mode="id" />
                 </Form.Item>
               </Col>
             </Row>
@@ -328,7 +328,7 @@ class UserEdit extends Component {
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item label="所在岗位" name="postInfoList">
-                  <StationSelect mode="multiple" />,
+                  <StationSelect mode="multiple" />
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -410,7 +410,7 @@ class UserEdit extends Component {
                   name="remarks"
                   initialValue={data.remarks}
                 >
-                  <TextArea rows={4} />,
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>

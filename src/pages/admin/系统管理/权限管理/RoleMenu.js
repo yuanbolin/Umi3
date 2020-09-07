@@ -108,9 +108,11 @@ class RoleMenu extends Component {
     data.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={item.name} key={item.id}>
-            {this.renderTreeNodes(item.children)}
-          </TreeNode>
+          <TreeNode
+            title={item.name}
+            key={item.id}
+            treeData={this.renderTreeNodes(item.children)}
+          />
         );
       }
       return <TreeNode key={item.id} title={item.name} {...item} />;
@@ -151,9 +153,8 @@ class RoleMenu extends Component {
               onCheck={this.onCheck}
               checkedKeys={this.state.checkedKeys}
               selectedKeys={this.state.selectedKeys}
-            >
-              {this.renderTreeNodes(this.state.dataSource)}
-            </Tree>
+              treeData={this.renderTreeNodes(this.state.dataSource)}
+            />
           </div>
           <Button
             type="primary"

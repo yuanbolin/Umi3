@@ -296,7 +296,7 @@ class UserAdd extends Component {
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item label="所在岗位" name="postInfoList">
-                  <StationSelect mode="multiple" />,
+                  <StationSelect mode="multiple" />
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -312,56 +312,62 @@ class UserAdd extends Component {
                   wrapperCol={{ span: 19 }}
                   labelCol={{ span: 3 }}
                 >
-                  <Row gutter={16} style={{ backgroundColor: '#F0F0F0' }}>
-                    <Col span={1} />
-                    <Col span={10}>附属机构</Col>
-                    <Col span={10}>附属岗位</Col>
-                    <Col span={2}>操作</Col>
-                  </Row>
-                  {sysOfficeSysPostList.map((item, i) => {
-                    return (
-                      <Row gutter={16} key={item.index}>
-                        <Col span={1}>{i + 1}</Col>
-                        <Col span={10}>
-                          <Form.Item
-                            name={`fushujigou-${item.index}`}
-                            rules={[
-                              {
-                                required: true,
-                                message: '必填!',
-                              },
-                            ]}
-                          >
-                            <OrgTreeSelect mode="id" />
-                          </Form.Item>
-                        </Col>
-                        <Col span={10}>
-                          <Form.Item name={`fushugangwei-${item.index}`}>
-                            <StationSelect allowClear />
-                          </Form.Item>
-                        </Col>
-                        <Col span={2}>
-                          <Button
-                            type="link"
-                            style={{ color: 'red' }}
-                            onClick={() => {
-                              this.removeOneFushu(item.index);
-                            }}
-                          >
-                            <DeleteOutlined />
-                          </Button>
-                        </Col>
-                      </Row>
-                    );
-                  })}
-                  <Row>
-                    <Col span={10} offset={1}>
-                      <Button type="primary" onClick={this.addOneFushu}>
-                        <PlusOutlined />
-                        增行
-                      </Button>
-                    </Col>
-                  </Row>
+                  <Form.Item>
+                    <Row gutter={16} style={{ backgroundColor: '#F0F0F0' }}>
+                      <Col span={1} />
+                      <Col span={10}>附属机构</Col>
+                      <Col span={10}>附属岗位</Col>
+                      <Col span={2}>操作</Col>
+                    </Row>
+                  </Form.Item>
+                  <Form.Item>
+                    {sysOfficeSysPostList.map((item, i) => {
+                      return (
+                        <Row gutter={16} key={item.index}>
+                          <Col span={1}>{i + 1}</Col>
+                          <Col span={10}>
+                            <Form.Item
+                              name={`fushujigou-${item.index}`}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: '必填!',
+                                },
+                              ]}
+                            >
+                              <OrgTreeSelect mode="id" />
+                            </Form.Item>
+                          </Col>
+                          <Col span={10}>
+                            <Form.Item name={`fushugangwei-${item.index}`}>
+                              <StationSelect allowClear />
+                            </Form.Item>
+                          </Col>
+                          <Col span={2}>
+                            <Button
+                              type="link"
+                              style={{ color: 'red' }}
+                              onClick={() => {
+                                this.removeOneFushu(item.index);
+                              }}
+                            >
+                              <DeleteOutlined />
+                            </Button>
+                          </Col>
+                        </Row>
+                      );
+                    })}
+                  </Form.Item>
+                  <Form.Item>
+                    <Row>
+                      <Col span={10} offset={1}>
+                        <Button type="primary" onClick={this.addOneFushu}>
+                          <PlusOutlined />
+                          增行
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Form.Item>
                 </Form.Item>
               </Col>
             </Row>

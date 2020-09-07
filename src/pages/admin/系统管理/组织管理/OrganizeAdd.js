@@ -47,7 +47,7 @@ class OrganizeAdd extends Component {
   };
 
   submit = async () => {
-    let value = await this.formRef.validateFields();
+    let value = await this.formRef.current.validateFields();
     let value2 = await this.formRef2.validateFields();
     let values = { ...value, ...value2 };
     if (this.pageType === 'edit') {
@@ -187,7 +187,7 @@ class OrganizeAdd extends Component {
                   name="leader"
                   initialValue={data.leader}
                 >
-                  <Input />,
+                  <Input />
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -196,7 +196,7 @@ class OrganizeAdd extends Component {
                   name="phone"
                   initialValue={data.phone}
                 >
-                  <Input allowClear />,
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
@@ -207,7 +207,7 @@ class OrganizeAdd extends Component {
                   name="address"
                   initialValue={data.address}
                 >
-                  <Input allowClear />,
+                  <Input allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -216,7 +216,7 @@ class OrganizeAdd extends Component {
                   name="zipCode"
                   initialValue={data.zipCode}
                 >
-                  <Input />,
+                  <Input />
                 </Form.Item>
               </Col>
             </Row>
@@ -227,7 +227,7 @@ class OrganizeAdd extends Component {
                   name="email"
                   initialValue={data.email}
                 >
-                  <Input allowClear />,
+                  <Input allowClear />
                 </Form.Item>
               </Col>
             </Row>
@@ -240,7 +240,7 @@ class OrganizeAdd extends Component {
                   name="remarks"
                   initialValue={data.remarks}
                 >
-                  <TextArea rows={4} />,
+                  <TextArea rows={4} />
                 </Form.Item>
               </Col>
             </Row>
