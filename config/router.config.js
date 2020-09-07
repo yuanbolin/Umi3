@@ -5,7 +5,7 @@ export default [
   },
   {
     path: '/login',
-    component: '@/components/login',
+    component: '@/components/FormNormalLogin',
   },
   {
     path: '/mock',
