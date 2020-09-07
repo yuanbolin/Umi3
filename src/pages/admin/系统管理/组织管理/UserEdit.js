@@ -16,7 +16,6 @@ import {
   Row,
   Select,
   Form,
-  Icon,
   Table,
   Modal,
   message,
@@ -27,6 +26,14 @@ import { put, get } from '@/utils/http';
 import OrgTreeSelect from '@/components/OrgTreeSelect';
 import CompanyTreeSelect from '@/components/CompanyTreeSelect';
 import StationSelect from '@/components/StationSelect';
+import {
+  MailOutlined,
+  MobileOutlined,
+  PhoneOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import styles from './User.less';
 
 const { Option } = Select;
@@ -267,7 +274,7 @@ class UserEdit extends Component {
                     },
                   ]}
                 >
-                  <Input addonAfter={<Icon type="mail" />} allowClear />
+                  <Input addonAfter={<MailOutlined />} allowClear />
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -281,14 +288,14 @@ class UserEdit extends Component {
                     },
                   ]}
                 >
-                  <Input addonAfter={<Icon type="mobile" />} allowClear />
+                  <Input addonAfter={<MobileOutlined />} allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item label="办公电话" name="userInfo.phone">
-                  <Input addonAfter={<Icon type="phone" />} allowClear />,
+                  <Input addonAfter={<PhoneOutlined />} allowClear />,
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -377,7 +384,7 @@ class UserEdit extends Component {
                               this.removeOneFushu(item.id);
                             }}
                           >
-                            <Icon type="delete" />
+                            <DeleteOutlined />
                           </Button>
                         </Col>
                       </Row>
@@ -386,7 +393,7 @@ class UserEdit extends Component {
                   <Row>
                     <Col span={10} offset={1}>
                       <Button type="primary" onClick={this.addOneFushu}>
-                        <Icon type="plus" />
+                        <PlusOutlined />
                         增行
                       </Button>
                     </Col>
@@ -443,8 +450,7 @@ class UserEdit extends Component {
           onCancel={this.handleCancel}
         >
           <p>
-            <Icon
-              type="question-circle"
+            <QuestionCircleOutlined
               style={{
                 color: '#FFCC00',
                 fontSize: '30px',

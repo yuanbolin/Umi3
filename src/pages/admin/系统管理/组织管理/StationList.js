@@ -12,7 +12,6 @@ import {
   Form,
   Button,
   Divider,
-  Icon,
   Input,
   Layout,
   Select,
@@ -28,6 +27,13 @@ import {
 
 import { history } from 'umi';
 import { get, del, put } from '@/utils/http';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  StopOutlined,
+  CheckCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import styles from './Station.less';
 
 const { Option } = Select;
@@ -36,6 +42,8 @@ const { confirm } = Modal;
 const { TextArea } = Input;
 
 class StationList extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -47,8 +55,6 @@ class StationList extends Component {
       Show: '隐藏',
     };
   }
-
-  formRef = React.createRef();
 
   componentDidMount() {
     this.fetch();
@@ -201,7 +207,7 @@ class StationList extends Component {
                   });
                 }}
               >
-                <Icon type="edit" style={{ color: 'green' }} />
+                <EditOutlined style={{ color: 'green' }} />
               </Button>
             </Tooltip>
           );
@@ -214,7 +220,7 @@ class StationList extends Component {
                   this.showDeleteConfirm(record.id);
                 }}
               >
-                <Icon type="delete" style={{ color: 'red' }} />
+                <DeleteOutlined style={{ color: 'red' }} />
               </Button>
             </Tooltip>
           );
@@ -226,7 +232,7 @@ class StationList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.tyConfirm(record)}
                 >
-                  <Icon type="stop" style={{ color: 'red' }} />
+                  <StopOutlined style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
@@ -236,7 +242,7 @@ class StationList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.qyConfirm(record)}
                 >
-                  <Icon type="check-circle" style={{ color: 'green' }} />
+                  <CheckCircleOutlined style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
             );
@@ -266,7 +272,7 @@ class StationList extends Component {
                 history.push('/admin/system/organ/stationadd'); // 跳转方式 2
               }}
             >
-              <Icon type="plus" />
+              <PlusOutlined />
               新增
             </Button>
           </div>

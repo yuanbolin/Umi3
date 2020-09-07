@@ -13,7 +13,6 @@ import {
   Button,
   DatePicker,
   Divider,
-  Icon,
   Input,
   Layout,
   TreeSelect,
@@ -31,6 +30,7 @@ import { del, get, put } from '@/utils/http';
 import OrgTreeSelect from '@/components/OrgTreeSelect';
 import CompanyTreeSelect from '@/components/CompanyTreeSelect';
 import StationSelect from '@/components/StationSelect';
+import { RightCircleOutlined } from '@ant-design/icons';
 import styles from './User.less';
 import TreeSideBar from '../../../../components/TreeSideBar';
 
@@ -258,7 +258,7 @@ class UserList extends Component {
           const gd_bt = (
             <Tooltip placement="top" title={tt}>
               <Button type="link" style={{ paddingLeft: 0 }}>
-                <Icon type="right-circle" style={{ color: 'blue' }} />
+                <RightCircleOutlined style={{ color: 'blue' }} />
               </Button>
             </Tooltip>
           );

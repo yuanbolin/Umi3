@@ -13,7 +13,6 @@ import {
   Button,
   Modal,
   Divider,
-  Icon,
   Input,
   Layout,
   TreeSelect,
@@ -26,6 +25,16 @@ import {
 import { history } from 'umi';
 import { del, get, put } from '@/utils/http';
 import CompanyTreeSelect from '@/components/CompanyTreeSelect';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  StopOutlined,
+  CheckCircleOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  UpOutlined,
+  DownOutlined,
+} from '@ant-design/icons';
 import styles from './Company.less';
 
 const { Option } = Select;
@@ -200,7 +209,7 @@ class CompanyList extends Component {
                   });
                 }}
               >
-                <Icon type="edit" style={{ color: 'green' }} />
+                <EditOutlined style={{ color: 'green' }} />
               </Button>
             </Tooltip>
           );
@@ -213,7 +222,7 @@ class CompanyList extends Component {
                   this.showDeleteConfirm(record.sysCompany.companyCode);
                 }}
               >
-                <Icon type="delete" style={{ color: 'red' }} />
+                <DeleteOutlined style={{ color: 'red' }} />
               </Button>
             </Tooltip>
           );
@@ -225,7 +234,7 @@ class CompanyList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.tyConfirm(record)}
                 >
-                  <Icon type="stop" style={{ color: 'red' }} />
+                  <StopOutlined style={{ color: 'red' }} />
                 </Button>
               </Tooltip>
             ) : (
@@ -235,14 +244,14 @@ class CompanyList extends Component {
                   style={{ paddingLeft: 0 }}
                   onClick={() => this.qyConfirm(record)}
                 >
-                  <Icon type="check-circle" style={{ color: 'green' }} />
+                  <CheckCircleOutlined style={{ color: 'green' }} />
                 </Button>
               </Tooltip>
             );
           const add_bt = (
             <Tooltip placement="top" title="新增下级公司">
               <Button type="link" style={{ paddingLeft: 0 }}>
-                <Icon type="plus" />
+                <PlusOutlined />
               </Button>
             </Tooltip>
           );
@@ -263,7 +272,7 @@ class CompanyList extends Component {
         <div className={styles.header}>
           <span className={styles.tit}>公司管理</span>
           <Button className={styles.addBtn} onClick={this.handleShow}>
-            <Icon type="search" />
+            <SearchOutlined />
             {this.state.Show}
           </Button>
           <Button
@@ -273,15 +282,15 @@ class CompanyList extends Component {
               history.push('/admin/system/organ/companyadd'); // 跳转方式 2
             }}
           >
-            <Icon type="plus" />
+            <PlusOutlined />
             新增
           </Button>
           <Button type="default" className={styles.addBtn}>
-            <Icon type="up" />
+            <UpOutlined />
             折叠
           </Button>
           <Button type="default" className={styles.addBtn}>
-            <Icon type="down" />
+            <DownOutlined />
             展开
           </Button>
           <Button
@@ -292,7 +301,7 @@ class CompanyList extends Component {
               // window.location.reload(); // 刷新
             }
           >
-            <Icon type="sync" />
+            <SyncOutlined />
             刷新
           </Button>
         </div>
