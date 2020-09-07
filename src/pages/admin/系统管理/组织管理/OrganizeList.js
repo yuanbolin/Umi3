@@ -32,6 +32,8 @@ const { Sider, Content } = Layout;
 const { confirm } = Modal;
 
 class OrganizeList extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -44,8 +46,6 @@ class OrganizeList extends Component {
       defaultExpandAllRows: false, //默认展开全部行 配合tableKey 使用
     };
   }
-
-  formRef = React.createRef();
 
   componentDidMount() {
     const initValForm = sessionStorage.getItem(`${this.props.match.url}-form`);
@@ -89,13 +89,8 @@ class OrganizeList extends Component {
     this.setState(prevState => ({ defaultExpandAllRows: isExpand }));
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.current.validateFields();
     this.setState({ loading: true });
     const newParams = {
       page: 0,

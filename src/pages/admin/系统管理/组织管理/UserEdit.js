@@ -33,6 +33,8 @@ const { Option } = Select;
 const { TextArea, Search } = Input;
 
 class UserEdit extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -48,8 +50,6 @@ class UserEdit extends Component {
     this.RoleList = [];
     this.fushuRandom = 0; // 用于附属机构key
   }
-
-  formRef = React.createRef();
 
   componentDidMount() {
     this.getRoleList();
@@ -111,8 +111,7 @@ class UserEdit extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
+    this.formRef.current.validateFields().then(values => {
       const postData = { ...values };
       let officePostInfoList = [];
       // eslint-disable-next-line guard-for-in

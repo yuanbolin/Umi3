@@ -33,6 +33,8 @@ const { Option } = Select;
 const { TextArea, Search } = Input;
 
 class UserAdd extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -80,8 +82,7 @@ class UserAdd extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
+    this.formRef.current.validateFields().then(values => {
       const postData = { ...values };
       let officePostInfoList = [];
       // eslint-disable-next-line guard-for-in
@@ -171,7 +172,7 @@ class UserAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item
@@ -272,7 +273,7 @@ class UserAdd extends Component {
 
           <p className={styles.addtit}>详细信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item label="员工编号" name="empCode">

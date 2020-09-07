@@ -30,6 +30,8 @@ const { Option } = Select;
 const { TextArea, Search } = Input;
 
 class UserFenPei extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -46,8 +48,7 @@ class UserFenPei extends Component {
   };
 
   submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (err) return false;
+    this.formRef.current.validateFields().then(values => {
       // const id = this.state.title === '编辑' ? this.props.match.params.id : null;
       // const newParams = { ...id, ...values };
       // post('sys-user-employees', newParams).then(res => {
@@ -94,7 +95,7 @@ class UserFenPei extends Component {
           <span className={styles.tit}>用户分配角色</span>
         </div>
         <div className={styles.middle}>
-          <Form {...formItemLayout}>
+          <Form {...formItemLayout} ref={this.formRef}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item

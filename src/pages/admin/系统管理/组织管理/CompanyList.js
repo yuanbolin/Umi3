@@ -33,6 +33,8 @@ const { confirm } = Modal;
 const { TreeNode } = TreeSelect;
 
 class CompanyList extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.PageSize = 10;
@@ -45,8 +47,6 @@ class CompanyList extends Component {
     };
   }
 
-  formRef = React.createRef();
-
   componentDidMount() {
     this.fetch();
   }
@@ -57,13 +57,8 @@ class CompanyList extends Component {
       : this.setState({ isShow: 'block', Show: '隐藏' });
   };
 
-  fetch = (params = {}) => {
-    let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+  fetch = async (params = {}) => {
+    let queryConditions = await this.formRef.current.validateFields();
     this.setState({ loading: true });
     const newParams = {
       page: 0,
