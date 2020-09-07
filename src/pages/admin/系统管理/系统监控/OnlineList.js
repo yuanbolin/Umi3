@@ -100,7 +100,6 @@ class OnlineList extends Component {
 
   render() {
     const searchValue = this.state.searchValue;
-    const { getFieldDecorator } = this.props.form;
     const { visible } = this.state;
     const columns = [
       {
@@ -185,7 +184,7 @@ class OnlineList extends Component {
                 <Button
                   style={{ marginLeft: 8 }}
                   onClick={() => {
-                    this.props.form.resetFields();
+                    this.formRef.resetFields();
                   }}
                 >
                   重置

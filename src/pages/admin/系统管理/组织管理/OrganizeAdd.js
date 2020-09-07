@@ -24,6 +24,8 @@ class OrganizeAdd extends Component {
     this.state = {
       data: {},
     };
+    this.formRef = React.createRef();
+    this.formRef2 = React.createRef();
   }
 
   componentDidMount() {
@@ -44,7 +46,10 @@ class OrganizeAdd extends Component {
     history.goBack();
   };
 
-  submit = values => {
+  submit = async () => {
+    let value = await this.formRef.validateFields();
+    let value2 = await this.formRef2.validateFields();
+    let values = { ...value, ...value2 };
     if (this.pageType === 'edit') {
       const id = this.props.match.params.id;
       const newParams = { id, ...this.state.data, ...values };
@@ -78,7 +83,7 @@ class OrganizeAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout}>
+          <Form ref={this.formRef} {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item
@@ -172,7 +177,7 @@ class OrganizeAdd extends Component {
             </Row>
           </Form>
 
-          <Form {...formItemLayout} onFinish={this.submit}>
+          <Form ref={this.formRef2} {...formItemLayout}>
             <p className={styles.addtit}>详细信息</p>
             <Divider />
             <Row>
@@ -242,8 +247,8 @@ class OrganizeAdd extends Component {
             <Divider />
             <Button
               type="primary"
-              htmlType="submit"
               style={{ marginLeft: 200 }}
+              onClick={this.submit}
             >
               保存
             </Button>

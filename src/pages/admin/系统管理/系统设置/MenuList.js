@@ -59,11 +59,11 @@ class MenuList extends Component {
 
   fetch = (params = {}) => {
     let queryConditions = {};
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        queryConditions = values;
-      }
-    });
+    // this.props.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     queryConditions = values;
+    //   }
+    // });
     this.setState({ loading: true });
     const newParams = { ...params, ...queryConditions };
     get('SysMenuResource/findALLMenu', newParams).then(res => {

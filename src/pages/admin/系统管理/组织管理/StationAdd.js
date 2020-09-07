@@ -22,6 +22,7 @@ class StationAdd extends Component {
     this.state = {
       data: {},
     };
+    this.formRef = React.createRef();
     this.pageType = this.props.match.params.id ? 'edit' : 'add'; // 判断页面是编辑还是新增
   }
 
@@ -81,7 +82,7 @@ class StationAdd extends Component {
         <div className={styles.middle}>
           <p className={styles.addtit}>基本信息</p>
           <Divider />
-          <Form {...formItemLayout} onFinish={this.submit}>
+          <Form ref={this.formRef} {...formItemLayout}>
             <Row>
               <Col span={10} offset={1}>
                 <Form.Item
@@ -168,8 +169,8 @@ class StationAdd extends Component {
             <Divider />
             <Button
               type="primary"
-              htmlType="submit"
               style={{ marginLeft: 200 }}
+              onClick={this.submit}
             >
               保存
             </Button>
