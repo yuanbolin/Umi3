@@ -13,7 +13,6 @@ import {
   Button,
   DatePicker,
   Divider,
-  Icon,
   Input,
   Layout,
   TreeSelect,
@@ -22,6 +21,7 @@ import {
   Tag,
   Cascader,
 } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import { get } from '@/utils/http';
 import DictAdd from '@/pages/admin/系统管理/系统设置/DictAdd';
@@ -124,7 +124,7 @@ class DictList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>字典管理</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type="search" />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
             <Button
@@ -134,7 +134,7 @@ class DictList extends Component {
                 history.push('/admin/system/setting/dictadd'); // 跳转方式 2
               }}
             >
-              <Icon type="plus" />
+              <PlusOutlined />
               新增
             </Button>
           </div>

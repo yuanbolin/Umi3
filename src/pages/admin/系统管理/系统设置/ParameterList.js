@@ -13,7 +13,6 @@ import {
   Button,
   DatePicker,
   Divider,
-  Icon,
   Input,
   Layout,
   TreeSelect,
@@ -22,6 +21,7 @@ import {
   Tag,
   Cascader,
 } from 'antd';
+import { SearchOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import { get } from '@/utils/http';
 import ParameterAdd from '@/pages/admin/系统管理/系统设置/ParameterAdd';
@@ -116,7 +116,7 @@ class ParameterList extends Component {
           <div className={styles.header}>
             <span className={styles.tit}>参数设置</span>
             <Button className={styles.addBtn} onClick={this.handleShow}>
-              <Icon type="search" />
+              <SearchOutlined />
               {this.state.Show}
             </Button>
             <Button
@@ -126,11 +126,11 @@ class ParameterList extends Component {
                 history.push('/admin/system/setting/parameteradd'); // 跳转方式 2
               }}
             >
-              <Icon type="plus" />
+              <PlusOutlined />
               新增
             </Button>
             <Button type="default" className={styles.addBtn}>
-              <Icon type="sync" />
+              <SyncOutlined />
               清理全部缓存
             </Button>
           </div>

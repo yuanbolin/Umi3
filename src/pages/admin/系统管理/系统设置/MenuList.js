@@ -12,7 +12,6 @@ import {
   Button,
   Divider,
   Form,
-  Icon,
   Input,
   Table,
   Tooltip,
@@ -25,6 +24,15 @@ import {
   Radio,
   notification,
 } from 'antd';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  UpOutlined,
+  DownOutlined,
+  SyncOutlined,
+  SortAscendingOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import { history } from 'umi';
 import { del, get, post, put } from '@/utils/http';
 import styles from './Menu.less';
@@ -163,7 +171,7 @@ class MenuList extends Component {
                   });
                 }}
               >
-                <Icon type="edit" style={{ color: 'green' }} />
+                <EditOutlined style={{ color: 'green' }} />
               </Button>
             </Tooltip>
           );
@@ -176,7 +184,7 @@ class MenuList extends Component {
                   this.showDeleteConfirm(record);
                 }}
               >
-                <Icon type="delete" style={{ color: 'red' }} />
+                <DeleteOutlined style={{ color: 'red' }} />
               </Button>
             </Tooltip>
           );
@@ -200,7 +208,7 @@ class MenuList extends Component {
               history.push('/admin/system/setting/menuadd'); // 跳转方式 2
             }}
           >
-            <Icon type="plus" />
+            <PlusOutlined />
             新增
           </Button>
           <Button
@@ -210,7 +218,7 @@ class MenuList extends Component {
               this.expandRows(false);
             }}
           >
-            <Icon type="up" />
+            <UpOutlined />
             折叠
           </Button>
           <Button
@@ -220,11 +228,11 @@ class MenuList extends Component {
               this.expandRows(true);
             }}
           >
-            <Icon type="down" />
+            <DownOutlined />
             展开
           </Button>
           <Button type="default" className={styles.addBtn} onClick={this.fetch}>
-            <Icon type="sync" />
+            <SyncOutlined />
             刷新
           </Button>
           <Button
@@ -232,7 +240,7 @@ class MenuList extends Component {
             className={styles.addBtn}
             onClick={this.saveSort}
           >
-            <Icon type="sort-ascending" />
+            <SortAscendingOutlined />
             保存排序
           </Button>
         </div>
